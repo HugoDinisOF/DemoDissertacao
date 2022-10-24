@@ -60,7 +60,7 @@ public class InteractingRaycast : MonoBehaviour
 
     public void DetachObject() {
         interactableObject.transform.parent = fatherInteractable.transform;
-        interactableObject.GetComponent<Rigidbody>().useGravity = true;
+        //interactableObject.GetComponent<Rigidbody>().useGravity = true;
         enableRaycast = true;
         Debug.Log("Detach");
     }
