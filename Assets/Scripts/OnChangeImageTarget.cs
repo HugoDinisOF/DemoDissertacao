@@ -7,7 +7,7 @@ public class OnChangeImageTarget : MonoBehaviour
     public void OnTargetFound() {
         foreach (Rigidbody childRB in GetComponentsInChildren<Rigidbody>()) 
         {
-            childRB.useGravity = true;     
+            //childRB.useGravity = true;     
         }
         DebugStatics.detectTarget = "TRUE";
     }
