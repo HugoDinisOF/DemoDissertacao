@@ -1,0 +1,13 @@
+As bananas são um super alimento. 
+Energia (kcal)	104
+Água (g)	72,1
+Proteínas (g)	1,6
+Lípidos (g)	0,4
+Hidratos de Carbono (g)	21,8
+Fibra (g)	3,1
+Vitamina B6 (mg)	0,29
+Magnésio (mg)	28
+Potássio (mg)	430
+Cálcio (mg)	8
+Ácido Fólico (µg)	14
+Agora depois de ver isto podemos concluir que banana é um super alimento
