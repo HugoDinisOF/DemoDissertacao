@@ -21,11 +21,16 @@ public class CheckBlockInside : MonoBehaviour
     {
         if (isInside) {
             float percentOverlap = CalculateOverlapPercent();
-            Debug.Log(percentOverlap);
+            if (percentOverlap > 60)
+            {
+                GameManager.instance.SetBlockState(block.id, true);
+            }
+            else 
+            {
+                GameManager.instance.SetBlockState(block.id, true);
+            }
         } 
     }
-
-
 
     float CalculateOverlapPercent() {
         Vector3 overlap = OverlapArea(collider, overlappedCollider);
@@ -42,6 +47,15 @@ public class CheckBlockInside : MonoBehaviour
                 overlappedCollider = (BoxCollider) other;
                 isInside = true;
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == overlappedCollider) {
+            Debug.Log("LEAVING");
+            isInside = false;
+            overlappedCollider = null;
         }
     }
 

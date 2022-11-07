@@ -16,10 +16,14 @@ public class LeanDragTranslateExt : LeanDragTranslate
     override protected void Update()
     {
         base.Update();
-        var fingers = Use.UpdateAndGetFingers();
-        rb.useGravity = fingers.Count == 0;
-        if (fingers.Count >= 1) {
-            rb.velocity = Vector3.zero;
+        if (OnChangeImageTarget.isImageTargetOn)
+        {
+            var fingers = Use.UpdateAndGetFingers();
+            rb.useGravity = fingers.Count == 0;
+            if (fingers.Count >= 1)
+            {
+                rb.velocity = Vector3.zero;
+            }
         }
     }
 }
