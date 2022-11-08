@@ -9,9 +9,6 @@ public class InteractingRaycast : MonoBehaviour
 
     private Camera arCamera;
     private GameObject interactableObject;
-    private GameObject fatherInteractable;
-    private Vector3 fixedPosition;
-    private Vector3 originalRotation;
 
     private Ray ray;
     private float distanceToObject;
@@ -57,16 +54,9 @@ public class InteractingRaycast : MonoBehaviour
         }
         else 
         {
-            //Vector3 rotate = transform.rotation.eulerAngles - lastRotation;
+            // Move object towards the place it should be
             Vector3 translation = transform.position + ray.direction * distanceToObject - interactableObject.transform.position;
-            //Vector3 translation = fixedPosition - interactableObject.transform.localPosition;
             interactableObject.transform.Translate(translation * moveSensitivity * Time.deltaTime);
-
-            
-            //interactableObject.transform.RotateAround(interactableObject.transform.position, Vector3.down, originalRotation.x);
-            //interactableObject.transform.RotateAround(interactableObject.transform.position, Vector3.right, originalRotation.y);
-            //interactableObject.transform.RotateAround(interactableObject.transform.position, Vector3.forward, originalRotation.z);
-            //lastRotation = transform.rotation.eulerAngles;
         }
     }
 
@@ -79,12 +69,10 @@ public class InteractingRaycast : MonoBehaviour
 
 
 
-    public void AttachObject() {
-        if (interactableObject == null) {
+    public void AttachObject()
+    {
+        if (interactableObject == null)
             return;
-        }
-        fatherInteractable = interactableObject.transform.parent.gameObject;
-        //interactableObject.transform.parent = transform;
 
         interactableRb = interactableObject.GetComponent<Rigidbody>();
         interactableLd = interactableObject.GetComponent<LeanDragTranslateExt>();
@@ -95,15 +83,12 @@ public class InteractingRaycast : MonoBehaviour
 
         interactableLd.SetIsGrabbed(true);
         enableRaycast = false;
-        fixedPosition = interactableObject.transform.localPosition;
-        originalRotation = transform.rotation.eulerAngles;
-        //interactableObject.transform.LookAt(transform.position);
-        //lastRotation = transform.rotation.eulerAngles;
+
         Debug.Log("Attach");
     }
 
-    public void DetachObject() {
-        interactableObject.transform.parent = fatherInteractable.transform;
+    public void DetachObject()
+    {
 
         interactableRb.useGravity = OnChangeImageTarget.isImageTargetOn;
         //rb.isKinematic = false;
