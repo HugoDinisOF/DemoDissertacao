@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.17652689, g: 0.22095177, b: 0.30326328, a: 1}
+  m_IndirectSpecularColor: {r: 0.17652658, g: 0.2209512, b: 0.3032621, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 427397242}
   - component: {fileID: 427397247}
   - component: {fileID: 427397248}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ARCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -424,6 +424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1559ba65cfeef014294dbff61c82ea6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minNearDistance: 0.11
+  moveSensitivity: 1.5
 --- !u!114 &427397248
 MonoBehaviour:
   m_ObjectHideFlags: 0
