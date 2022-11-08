@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     
     public static GameManager instance = null;
-    public Dictionary<int,bool> blocksDone;
+    private Dictionary<int,bool> blocksDone;
+    public GameObject gameObjectWin;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     void WinGame()
     {
+        gameObjectWin.SetActive(true);
         Debug.Log("GAME WIN");
     }
 

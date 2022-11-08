@@ -27,7 +27,7 @@ public class CheckBlockInside : MonoBehaviour
             }
             else 
             {
-                GameManager.instance.SetBlockState(block.id, true);
+                GameManager.instance.SetBlockState(block.id, false);
             }
         } 
     }
@@ -55,6 +55,7 @@ public class CheckBlockInside : MonoBehaviour
         if (other == overlappedCollider) {
             Debug.Log("LEAVING");
             isInside = false;
+            GameManager.instance.SetBlockState(block.id, false);
             overlappedCollider = null;
         }
     }
