@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class InteractingRaycast : MonoBehaviour
+public class InteractingRaycast : NetworkBehaviour
 {
     public float minNearDistance = 0.09f;
     public float moveSensitivity = 1.2f;
@@ -21,12 +22,19 @@ public class InteractingRaycast : MonoBehaviour
     void Start()
     {
         arCamera = GetComponent<Camera>();
+        if (!IsOwner)
+        {
+            arCamera.enabled = false;
+            return;
+        }
         interactableObject = null;
         enableRaycast = true;
     }
 
     void Update()
     {
+        if (!IsOwner) return;
+
         ray = arCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         if (enableRaycast)
         {
