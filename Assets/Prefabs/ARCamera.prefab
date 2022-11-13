@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 5731540578401224193}
   - component: {fileID: 5731540578401224198}
   - component: {fileID: 5731540578401224199}
-  - component: {fileID: 5731540578401224194}
   - component: {fileID: 5731540578401224445}
   - component: {fileID: 3214332386761960965}
-  - component: {fileID: 1659065432082622673}
+  - component: {fileID: 8187316282613197110}
+  - component: {fileID: 2255702888110923757}
   m_Layer: 6
   m_Name: ARCamera
   m_TagString: MainCamera
@@ -116,20 +116,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c47f92041efbb4b429a4eafca855ebe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5731540578401224194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731540578401224196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1559ba65cfeef014294dbff61c82ea6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minNearDistance: 0.11
-  moveSensitivity: 1.5
 --- !u!114 &5731540578401224445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,7 +165,21 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1659065432082622673
+--- !u!114 &8187316282613197110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5731540578401224196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1559ba65cfeef014294dbff61c82ea6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minNearDistance: 0.11
+  moveSensitivity: 1.5
+--- !u!114 &2255702888110923757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
