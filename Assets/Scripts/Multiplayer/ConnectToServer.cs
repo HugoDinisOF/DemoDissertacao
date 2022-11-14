@@ -10,6 +10,7 @@ using Unity.Netcode.Transports.UTP;
 public class ConnectToServer : MonoBehaviour
 {
     public TMP_InputField inputField;
+    public GameObject uiCamera;
 
     public void SetConnectToServer() {
         try
@@ -17,7 +18,9 @@ public class ConnectToServer : MonoBehaviour
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(inputField.text, 7777);
             if (NetworkManager.Singleton.StartClient())
             {
-                enabled = false;
+                gameObject.SetActive(false);
+                Destroy(uiCamera);
+                return;
             }
             DebugStatics.debugObject = "fail connecting";
         } catch (Exception e)
