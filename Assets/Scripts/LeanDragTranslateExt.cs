@@ -8,7 +8,7 @@ using CW.Common;
 /// <summary>This component allows you to translate the current GameObject relative to the camera using the finger drag gesture.</summary>
 [HelpURL(LeanTouch.HelpUrlPrefix + "LeanDragTranslate")]
 [AddComponentMenu(LeanTouch.ComponentPathPrefix + "Drag Translate")]
-public class LeanDragTranslate : NetworkBehaviour
+public class LeanDragTranslate : AbstractOwnershipAction
 {
 	/// <summary>The method used to find fingers to use with this component. See LeanFingerFilter documentation for more information.</summary>
 	public LeanFingerFilter Use = new LeanFingerFilter(true);
@@ -229,39 +229,6 @@ public class LeanDragTranslateExt : LeanDragTranslate
 		}
 
 	}
-
-	public void ChangeOwnership() {
-		// If it already is the owner or another player is the owner don't do anything
-		if (IsOwner || !IsOwnedByServer) return;
-
-		StopAllCoroutines();
-		ChangeOwnershipServerRpc(NetworkManager.Singleton.LocalClientId);
-	}
-
-	public void RemoveOwnership()
-	{
-		// If it isn't the owner don't do anything
-		if (!IsOwner) return;
-
-		StartCoroutine(DelayRemoveOwnership());
-	}
-
-	IEnumerator DelayRemoveOwnership() {
-		yield return new WaitForSeconds(0.08f);
-		RemoveOwnershipServerRpc();
-	}
-
-	[ServerRpc(RequireOwnership = false)]
-    public void ChangeOwnershipServerRpc(ulong localClientId) {
-        GetComponent<NetworkObject>().ChangeOwnership(localClientId);
-		Debug.Log("changed ownership");
-    }
-    [ServerRpc(RequireOwnership = false)]
-    public void RemoveOwnershipServerRpc()
-    {
-		Debug.Log("removed ownership");
-		GetComponent<NetworkObject>().RemoveOwnership();
-    }
 
     public void SetIsGrabbed(bool state) {
         isGrabbed = state;

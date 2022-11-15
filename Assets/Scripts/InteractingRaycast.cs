@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class InteractingRaycast : NetworkBehaviour
+public class InteractingRaycast : AbstractOwnershipAction
 {
     public float minNearDistance = 0.09f;
     public float moveSensitivity = 1.2f;
@@ -92,6 +92,7 @@ public class InteractingRaycast : NetworkBehaviour
 
         interactableLd.SetIsGrabbed(true);
         enableRaycast = false;
+        ChangeOwnership();
 
         Debug.Log("Attach");
     }
@@ -105,7 +106,14 @@ public class InteractingRaycast : NetworkBehaviour
 
         interactableLd.SetIsGrabbed(false);
         enableRaycast = true;
+        RemoveOwnership();
         Debug.Log("Detach");
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        Debug.Log("CONNECTED TO SERVER");
+        GameManager.instance.grabBtn.onClick.AddListener(Interact);
     }
 
 }

@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
+using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     
     public static GameManager instance = null;
     private Dictionary<int,bool> blocksDone;
     public GameObject gameObjectWin;
+    public Button grabBtn;
 
     // Start is called before the first frame update
     void Start()
@@ -48,5 +51,4 @@ public class GameManager : MonoBehaviour
         Debug.Log("GAME WIN");
     }
 
-    
 }
