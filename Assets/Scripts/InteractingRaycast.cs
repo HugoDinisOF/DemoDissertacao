@@ -7,6 +7,7 @@ public class InteractingRaycast : NetworkBehaviour
 {
     public float minNearDistance = 0.09f;
     public float moveSensitivity = 1.2f;
+    public bool isOnline = true;
 
     private Camera arCamera;
     private GameObject interactableObject;
@@ -22,7 +23,7 @@ public class InteractingRaycast : NetworkBehaviour
     void Start()
     {
         arCamera = GetComponent<Camera>();
-        if (!IsOwner)
+        if (!IsOwner & isOnline)
         {
             arCamera.enabled = false;
             return;
@@ -33,7 +34,7 @@ public class InteractingRaycast : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) return;
+        if (!IsOwner & isOnline) return;
 
         ray = arCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         if (enableRaycast)
