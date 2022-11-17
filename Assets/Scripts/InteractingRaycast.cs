@@ -92,7 +92,8 @@ public class InteractingRaycast : AbstractOwnershipAction
 
         interactableLd.SetIsGrabbed(true);
         enableRaycast = false;
-        ChangeOwnership();
+
+        interactableObject.GetComponent<AbstractOwnershipAction>().ChangeOwnership();
 
         Debug.Log("Attach");
     }
@@ -106,7 +107,7 @@ public class InteractingRaycast : AbstractOwnershipAction
 
         interactableLd.SetIsGrabbed(false);
         enableRaycast = true;
-        RemoveOwnership();
+        interactableObject.GetComponent<AbstractOwnershipAction>().RemoveOwnership();
         Debug.Log("Detach");
     }
 
