@@ -22,11 +22,9 @@ public class InteractingRaycast : AbstractOwnershipAction
 
     void Start()
     {
-        arCamera = GetComponent<Camera>();
-        if (!IsOwner & isOnline)
-        {
-            arCamera.enabled = false;
-            return;
+        // tries to get the component if it fails it is in (presumably) MP mode so grab the MainPlayerCamera
+        if (!TryGetComponent<Camera>(out arCamera)) {
+            arCamera = GameManager.instance.MainPlayerCamera.GetComponent<Camera>();
         }
         interactableObject = null;
         enableRaycast = true;
@@ -35,6 +33,10 @@ public class InteractingRaycast : AbstractOwnershipAction
     void Update()
     {
         if (!IsOwner & isOnline) return;
+
+        // Update the position of the player as they move their camera 
+        transform.position = GameManager.instance.MainPlayerCamera.transform.position;
+        transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
 
         ray = arCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         if (enableRaycast)
@@ -115,6 +117,8 @@ public class InteractingRaycast : AbstractOwnershipAction
     {
         Debug.Log("CONNECTED TO SERVER");
         GameManager.instance.grabBtn.onClick.AddListener(Interact);
+        transform.position = GameManager.instance.MainPlayerCamera.transform.position;
+        transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
     }
 
 }

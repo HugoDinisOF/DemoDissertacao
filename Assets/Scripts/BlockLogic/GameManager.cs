@@ -11,6 +11,7 @@ public class GameManager : NetworkBehaviour
     private Dictionary<int,bool> blocksDone;
     public GameObject gameObjectWin;
     public Button grabBtn;
+    public GameObject MainPlayerCamera;
 
     // Start is called before the first frame update
     void Start()

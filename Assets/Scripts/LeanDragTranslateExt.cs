@@ -5,6 +5,7 @@ using Lean.Touch;
 using Unity.Netcode;
 using CW.Common;
 
+// This class is the original LeanDragTranslate from Lean.Touch modified to work with networkbehaviour
 /// <summary>This component allows you to translate the current GameObject relative to the camera using the finger drag gesture.</summary>
 [HelpURL(LeanTouch.HelpUrlPrefix + "LeanDragTranslate")]
 [AddComponentMenu(LeanTouch.ComponentPathPrefix + "Drag Translate")]
