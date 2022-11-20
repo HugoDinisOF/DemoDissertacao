@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Dissertation.BlockLogic;
 
+namespace Dissertation.Core
+{
 public class CheckBlockInside : MonoBehaviour
 {
     public Block block;
@@ -19,20 +22,22 @@ public class CheckBlockInside : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isInside) {
+        if (isInside)
+        {
             float percentOverlap = CalculateOverlapPercent();
             if (percentOverlap > 60)
             {
                 GameManager.instance.SetBlockState(block.id, true);
             }
-            else 
+            else
             {
                 GameManager.instance.SetBlockState(block.id, false);
             }
-        } 
+        }
     }
 
-    float CalculateOverlapPercent() {
+    float CalculateOverlapPercent()
+    {
         Vector3 overlap = OverlapArea(collider, overlappedCollider);
         float overlapVolume = overlap.x * overlap.y * overlap.z;
         return overlapVolume / volume * 100f;
@@ -40,11 +45,13 @@ public class CheckBlockInside : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Interactable") && overlappedCollider is null) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Interactable") && overlappedCollider is null)
+        {
             Block otherBlock = other.GetComponent<BlockHolder>().block;
-            if (block.IsCompatible(otherBlock)) {
+            if (block.IsCompatible(otherBlock))
+            {
                 // NOTE: Considering all our colliders will be box colliders for now :P
-                overlappedCollider = (BoxCollider) other;
+                overlappedCollider = (BoxCollider)other;
                 isInside = true;
             }
         }
@@ -52,7 +59,8 @@ public class CheckBlockInside : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other == overlappedCollider) {
+        if (other == overlappedCollider)
+        {
             Debug.Log("LEAVING");
             isInside = false;
             GameManager.instance.SetBlockState(block.id, false);
@@ -88,4 +96,5 @@ public class CheckBlockInside : MonoBehaviour
         // the delta between those is now your overlapping area
         return lowerMax - higherMin;
     }
+}
 }

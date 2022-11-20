@@ -4,6 +4,7 @@ using UnityEngine;
 using Lean.Touch;
 using Unity.Netcode;
 using CW.Common;
+using Dissertation.Multiplayer;
 
 // This class is the original LeanDragTranslate from Lean.Touch modified to work with networkbehaviour
 /// <summary>This component allows you to translate the current GameObject relative to the camera using the finger drag gesture.</summary>
@@ -190,48 +191,53 @@ namespace Lean.Touch.Editor
 }
 #endif
 
-
-[RequireComponent(typeof(Rigidbody))]
-public class LeanDragTranslateExt : LeanDragTranslate
+namespace Dissertation.Core
 {
-
-	Rigidbody rb;
-	bool isGrabbed = false;
-	bool isMoving = false;
-
-	private void Start()
+	[RequireComponent(typeof(Rigidbody))]
+	public class LeanDragTranslateExt : LeanDragTranslate
 	{
-		rb = GetComponent<Rigidbody>();
-	}
 
-	override protected void Update()
-	{
-		if (OnChangeImageTarget.isImageTargetOn & !isGrabbed)
+		Rigidbody rb;
+		bool isGrabbed = false;
+		bool isMoving = false;
+
+		private void Start()
 		{
-			var fingers = Use.UpdateAndGetFingers();
-			if (fingers.Count >= 1)
+			rb = GetComponent<Rigidbody>();
+		}
+
+		override protected void Update()
+		{
+			if (OnChangeImageTarget.isImageTargetOn & !isGrabbed)
 			{
-				Debug.Log("Trying to grab!");
-				rb.velocity = Vector3.zero;
-				ChangeOwnership();
-				isMoving = true;
-			}
-			else if (isMoving) {
-				RemoveOwnership();
-			}
-			base.Update();
+				var fingers = Use.UpdateAndGetFingers();
+				if (fingers.Count >= 1)
+				{
+					Debug.Log("Trying to grab!");
+					rb.velocity = Vector3.zero;
+					ChangeOwnership();
+					isMoving = true;
+				}
+				else if (isMoving)
+				{
+					RemoveOwnership();
+				}
+				base.Update();
 
-			rb.useGravity = fingers.Count == 0;
-			//RemoveOwnershipServerRpc();
-		}
-		else {
-			// have to call UpdateAndGetFingers() every frame as noted in the same function notes
-			var fingers = Use.UpdateAndGetFingers();
+				rb.useGravity = fingers.Count == 0;
+				//RemoveOwnershipServerRpc();
+			}
+			else
+			{
+				// have to call UpdateAndGetFingers() every frame as noted in the same function notes
+				var fingers = Use.UpdateAndGetFingers();
+			}
+
 		}
 
+		public void SetIsGrabbed(bool state)
+		{
+			isGrabbed = state;
+		}
 	}
-
-    public void SetIsGrabbed(bool state) {
-        isGrabbed = state;
-    }
 }

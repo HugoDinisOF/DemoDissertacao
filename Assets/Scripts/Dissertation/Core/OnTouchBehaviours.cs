@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Dissertation.Core
+{
 [RequireComponent(typeof(Rigidbody))]
 public class OnTouchBehaviours : MonoBehaviour
 {
@@ -11,11 +13,14 @@ public class OnTouchBehaviours : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void OnFingerDown() {
+    public void OnFingerDown()
+    {
         rb.useGravity = false;
     }
 
-    public void OnFingerUp() {
+    public void OnFingerUp()
+    {
         rb.useGravity = true;
     }
+}
 }

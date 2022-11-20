@@ -1,0 +1,23 @@
+{
+    "name": "Dissertation.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:3b8ed52f1b5c64994af4c4e0aa4b6c4b",
+        "GUID:688cfbbe2a536604ab4aa06ececa1da3",
+        "GUID:82c7e6eac44d7e048b22ad98800dcfc7",
+        "GUID:637dfb2b87b2cf0499a8da5b0b91da54",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:18f05986210f537459ef92121dfd8b8f",
+        "GUID:84f3c45508a12a4419ebfd7ac0cd74ae",
+        "GUID:9ef7a89d226ccfc4f81f3852415b0b83"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

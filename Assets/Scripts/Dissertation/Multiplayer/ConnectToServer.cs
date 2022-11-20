@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Dissertation.DebugLoggers;
 //using UnityEngine.SceneManagement;
 
+namespace Dissertation.Multiplayer 
+{ 
 public class ConnectToServer : MonoBehaviour
 {
     public TMP_InputField inputField;
@@ -28,4 +29,5 @@ public class ConnectToServer : MonoBehaviour
         }
         //SceneManager.LoadScene(1);
     }
+}
 }

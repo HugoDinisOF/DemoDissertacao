@@ -4,11 +4,13 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
 
+namespace Dissertation.Core
+{
 public class GameManager : NetworkBehaviour
 {
-    
+
     public static GameManager instance = null;
-    private Dictionary<int,bool> blocksDone;
+    private Dictionary<int, bool> blocksDone;
     public GameObject gameObjectWin;
     public Button grabBtn;
     public GameObject MainPlayerCamera;
@@ -16,7 +18,8 @@ public class GameManager : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!(instance is null)) {
+        if (!(instance is null))
+        {
             Destroy(this);
             return;
         }
@@ -24,22 +27,27 @@ public class GameManager : NetworkBehaviour
         GetAndSetBlocksDone();
     }
 
-    void GetAndSetBlocksDone() {
+    void GetAndSetBlocksDone()
+    {
         blocksDone = new Dictionary<int, bool>();
         GameObject parent = GameObject.Find("ImageTarget");
-        foreach (CheckBlockInside child in parent.GetComponentsInChildren<CheckBlockInside>()) {
+        foreach (CheckBlockInside child in parent.GetComponentsInChildren<CheckBlockInside>())
+        {
             blocksDone.Add(child.block.id, false);
         }
     }
 
-    public void SetBlockState(int id, bool value) {
+    public void SetBlockState(int id, bool value)
+    {
         // Don't do anything if value is the same;
         if (!(blocksDone[id] ^ value))
             return;
 
         blocksDone[id] = value;
-        foreach (int key in blocksDone.Keys) {
-            if (!blocksDone[key]) {
+        foreach (int key in blocksDone.Keys)
+        {
+            if (!blocksDone[key])
+            {
                 return;
             }
         }
@@ -52,4 +60,5 @@ public class GameManager : NetworkBehaviour
         Debug.Log("GAME WIN");
     }
 
+}
 }

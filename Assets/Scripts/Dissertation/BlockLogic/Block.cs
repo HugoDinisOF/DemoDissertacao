@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Dissertation.BlockLogic
+{
 [System.Serializable]
 public class Block
 {
@@ -9,7 +11,7 @@ public class Block
     public BlockColor color;
     public BlockType blockType;
 
-    public enum BlockType 
+    public enum BlockType
     {
         CUBE,
     };
@@ -20,8 +22,10 @@ public class Block
         BLUE,
     };
 
-    public bool IsCompatible(Block block) {
+    public bool IsCompatible(Block block)
+    {
         return block.color == color && block.blockType == blockType;
     }
+}
 }
 

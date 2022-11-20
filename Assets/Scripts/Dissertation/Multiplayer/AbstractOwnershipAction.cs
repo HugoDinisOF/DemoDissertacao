@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
+namespace Dissertation.Multiplayer
+{
 public abstract class AbstractOwnershipAction : NetworkBehaviour
 {
 	public bool ChangeOwnership()
@@ -31,17 +33,18 @@ public abstract class AbstractOwnershipAction : NetworkBehaviour
 	}
 
 	[ServerRpc(RequireOwnership = false)]
-    public void ChangeOwnershipServerRpc(ulong localClientId)
-    {
-        GetComponent<NetworkObject>().ChangeOwnership(localClientId);
-        Debug.Log("changed ownership");
-    }
+	public void ChangeOwnershipServerRpc(ulong localClientId)
+	{
+		GetComponent<NetworkObject>().ChangeOwnership(localClientId);
+		Debug.Log("changed ownership");
+	}
 
-    [ServerRpc(RequireOwnership = false)]
-    public void RemoveOwnershipServerRpc()
-    {
-        Debug.Log("removed ownership");
-        GetComponent<NetworkObject>().RemoveOwnership();
-    }
+	[ServerRpc(RequireOwnership = false)]
+	public void RemoveOwnershipServerRpc()
+	{
+		Debug.Log("removed ownership");
+		GetComponent<NetworkObject>().RemoveOwnership();
+	}
 
+}
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class DebugTarget : MonoBehaviour
+namespace Dissertation.DebugLoggers
+{
+public class DebugInteractingObject : MonoBehaviour
 {
     TextMeshProUGUI textMeshPro;
 
@@ -15,6 +17,7 @@ public class DebugTarget : MonoBehaviour
 
     void Update()
     {
-        textMeshPro.text = DebugStatics.detectTarget;
+        textMeshPro.text = DebugStatics.debugObject;
     }
+}
 }

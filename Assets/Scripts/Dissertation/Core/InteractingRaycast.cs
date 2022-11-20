@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Dissertation.DebugLoggers;
+using Dissertation.Multiplayer;
 
+namespace Dissertation.Core
+{
 public class InteractingRaycast : AbstractOwnershipAction
 {
     public float minNearDistance = 0.09f;
@@ -23,7 +27,8 @@ public class InteractingRaycast : AbstractOwnershipAction
     void Start()
     {
         // tries to get the component if it fails it is in (presumably) MP mode so grab the MainPlayerCamera
-        if (!TryGetComponent<Camera>(out arCamera)) {
+        if (!TryGetComponent<Camera>(out arCamera))
+        {
             arCamera = GameManager.instance.MainPlayerCamera.GetComponent<Camera>();
         }
         interactableObject = null;
@@ -48,7 +53,8 @@ public class InteractingRaycast : AbstractOwnershipAction
                 Transform objectHit = hit.transform;
 
                 distanceToObject = Vector3.Distance(hit.point, transform.position);
-                if (distanceToObject < minNearDistance) {
+                if (distanceToObject < minNearDistance)
+                {
                     distanceToObject = minNearDistance;
                 }
 
@@ -63,7 +69,7 @@ public class InteractingRaycast : AbstractOwnershipAction
                 interactableObject = null;
             }
         }
-        else 
+        else
         {
             // Move object towards the place it should be
             Vector3 translation = transform.position + ray.direction * distanceToObject - interactableObject.transform.position;
@@ -71,7 +77,8 @@ public class InteractingRaycast : AbstractOwnershipAction
         }
     }
 
-    public void Interact() {
+    public void Interact()
+    {
         if (enableRaycast)
             AttachObject();
         else
@@ -121,4 +128,5 @@ public class InteractingRaycast : AbstractOwnershipAction
         transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
     }
 
+}
 }
