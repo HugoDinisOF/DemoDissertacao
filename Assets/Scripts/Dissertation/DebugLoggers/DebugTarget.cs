@@ -5,19 +5,19 @@ using TMPro;
 
 namespace Dissertation.DebugLoggers 
 { 
-public class DebugTarget : MonoBehaviour
-{
-    TextMeshProUGUI textMeshPro;
-
-    void Start()
+    public class DebugTarget : MonoBehaviour
     {
-        textMeshPro = GetComponent<TextMeshProUGUI>();
-    }
+        TextMeshProUGUI textMeshPro;
+
+        void Start()
+        {
+            textMeshPro = GetComponent<TextMeshProUGUI>();
+        }
 
 
-    void Update()
-    {
-        textMeshPro.text = DebugStatics.detectTarget;
+        void Update()
+        {
+            textMeshPro.text = DebugStatics.detectTarget;
+        }
     }
-}
 }

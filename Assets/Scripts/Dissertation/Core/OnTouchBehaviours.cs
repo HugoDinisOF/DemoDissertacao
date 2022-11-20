@@ -4,23 +4,23 @@ using UnityEngine;
 
 namespace Dissertation.Core
 {
-[RequireComponent(typeof(Rigidbody))]
-public class OnTouchBehaviours : MonoBehaviour
-{
-    Rigidbody rb;
-    void Start()
+    [RequireComponent(typeof(Rigidbody))]
+    public class OnTouchBehaviours : MonoBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-    }
+        Rigidbody rb;
+        void Start()
+        {
+            rb = GetComponent<Rigidbody>();
+        }
 
-    public void OnFingerDown()
-    {
-        rb.useGravity = false;
-    }
+        public void OnFingerDown()
+        {
+            rb.useGravity = false;
+        }
 
-    public void OnFingerUp()
-    {
-        rb.useGravity = true;
+        public void OnFingerUp()
+        {
+            rb.useGravity = true;
+        }
     }
-}
 }

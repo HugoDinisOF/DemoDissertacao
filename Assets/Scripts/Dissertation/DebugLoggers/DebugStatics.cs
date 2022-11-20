@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Dissertation.DebugLoggers
 {
-public class DebugStatics
-{
-    public static string debugObject;
-    public static string detectTarget;
-}
+    public class DebugStatics
+    {
+        public static string debugObject;
+        public static string detectTarget;
+    }
 }

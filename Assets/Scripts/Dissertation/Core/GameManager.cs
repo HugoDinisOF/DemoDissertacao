@@ -6,59 +6,59 @@ using UnityEngine.UI;
 
 namespace Dissertation.Core
 {
-public class GameManager : NetworkBehaviour
-{
-
-    public static GameManager instance = null;
-    private Dictionary<int, bool> blocksDone;
-    public GameObject gameObjectWin;
-    public Button grabBtn;
-    public GameObject MainPlayerCamera;
-
-    // Start is called before the first frame update
-    void Start()
+    public class GameManager : NetworkBehaviour
     {
-        if (!(instance is null))
-        {
-            Destroy(this);
-            return;
-        }
-        instance = this;
-        GetAndSetBlocksDone();
-    }
 
-    void GetAndSetBlocksDone()
-    {
-        blocksDone = new Dictionary<int, bool>();
-        GameObject parent = GameObject.Find("ImageTarget");
-        foreach (CheckBlockInside child in parent.GetComponentsInChildren<CheckBlockInside>())
-        {
-            blocksDone.Add(child.block.id, false);
-        }
-    }
+        public static GameManager instance = null;
+        private Dictionary<int, bool> blocksDone;
+        public GameObject gameObjectWin;
+        public Button grabBtn;
+        public GameObject MainPlayerCamera;
 
-    public void SetBlockState(int id, bool value)
-    {
-        // Don't do anything if value is the same;
-        if (!(blocksDone[id] ^ value))
-            return;
-
-        blocksDone[id] = value;
-        foreach (int key in blocksDone.Keys)
+        // Start is called before the first frame update
+        void Start()
         {
-            if (!blocksDone[key])
+            if (!(instance is null))
             {
+                Destroy(this);
                 return;
             }
+            instance = this;
+            GetAndSetBlocksDone();
         }
-        WinGame();
-    }
 
-    void WinGame()
-    {
-        gameObjectWin.SetActive(true);
-        Debug.Log("GAME WIN");
-    }
+        void GetAndSetBlocksDone()
+        {
+            blocksDone = new Dictionary<int, bool>();
+            GameObject parent = GameObject.Find("ImageTarget");
+            foreach (CheckBlockInside child in parent.GetComponentsInChildren<CheckBlockInside>())
+            {
+                blocksDone.Add(child.block.id, false);
+            }
+        }
 
-}
+        public void SetBlockState(int id, bool value)
+        {
+            // Don't do anything if value is the same;
+            if (!(blocksDone[id] ^ value))
+                return;
+
+            blocksDone[id] = value;
+            foreach (int key in blocksDone.Keys)
+            {
+                if (!blocksDone[key])
+                {
+                    return;
+                }
+            }
+            WinGame();
+        }
+
+        void WinGame()
+        {
+            gameObjectWin.SetActive(true);
+            Debug.Log("GAME WIN");
+        }
+
+    }
 }

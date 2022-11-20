@@ -8,26 +8,26 @@ using Dissertation.DebugLoggers;
 
 namespace Dissertation.Multiplayer 
 { 
-public class ConnectToServer : MonoBehaviour
-{
-    public TMP_InputField inputField;
+    public class ConnectToServer : MonoBehaviour
+    {
+        public TMP_InputField inputField;
 
-    public void SetConnectToServer() {
-        try
-        {
-            NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(inputField.text, 7777);
-            if (NetworkManager.Singleton.StartClient())
+        public void SetConnectToServer() {
+            try
             {
-                gameObject.SetActive(false);
-                //Destroy(uiCamera);
-                return;
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(inputField.text, 7777);
+                if (NetworkManager.Singleton.StartClient())
+                {
+                    gameObject.SetActive(false);
+                    //Destroy(uiCamera);
+                    return;
+                }
+                DebugStatics.debugObject = "fail connecting";
+            } catch (Exception e)
+            {
+                DebugStatics.debugObject = e.Message;
             }
-            DebugStatics.debugObject = "fail connecting";
-        } catch (Exception e)
-        {
-            DebugStatics.debugObject = e.Message;
+            //SceneManager.LoadScene(1);
         }
-        //SceneManager.LoadScene(1);
     }
-}
 }

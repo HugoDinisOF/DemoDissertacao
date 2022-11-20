@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Dissertation.BlockLogic
 {
-public class BlockHolder : MonoBehaviour
-{
-    public Block block;
-}
+    public class BlockHolder : MonoBehaviour
+    {
+        public Block block;
+    }
 }

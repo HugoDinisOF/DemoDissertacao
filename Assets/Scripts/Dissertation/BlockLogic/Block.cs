@@ -4,28 +4,28 @@ using UnityEngine;
 
 namespace Dissertation.BlockLogic
 {
-[System.Serializable]
-public class Block
-{
-    public int id;
-    public BlockColor color;
-    public BlockType blockType;
-
-    public enum BlockType
+    [System.Serializable]
+    public class Block
     {
-        CUBE,
-    };
+        public int id;
+        public BlockColor color;
+        public BlockType blockType;
 
-    public enum BlockColor
-    {
-        RED,
-        BLUE,
-    };
+        public enum BlockType
+        {
+            CUBE,
+        };
 
-    public bool IsCompatible(Block block)
-    {
-        return block.color == color && block.blockType == blockType;
+        public enum BlockColor
+        {
+            RED,
+            BLUE,
+        };
+
+        public bool IsCompatible(Block block)
+        {
+            return block.color == color && block.blockType == blockType;
+        }
     }
-}
 }
 
