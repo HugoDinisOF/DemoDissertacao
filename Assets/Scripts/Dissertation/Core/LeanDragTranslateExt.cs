@@ -215,16 +215,20 @@ namespace Dissertation.Core
 				{
 					Debug.Log("Trying to grab!");
 					rb.velocity = Vector3.zero;
-					ChangeOwnership();
+					DebugServerRpc("Pre grab touch");
+					if (ChangeOwnership())
+						DebugServerRpc("Post grab touch");
 					isMoving = true;
 				}
 				else if (isMoving)
 				{
 					//FIXME: BIG PROBLEM HERE SPAMMING CALLS FOR NO REASON
+					DebugServerRpc("pre remove touch");
 					RemoveOwnership();
+					DebugServerRpc("post remove touch");
 					isMoving = false;
 				}
-				if (!isRemoving || IsOwner)
+				if (!isRemoving && IsOwner)
 					base.Update();
 
 				rb.useGravity = fingers.Count == 0;
