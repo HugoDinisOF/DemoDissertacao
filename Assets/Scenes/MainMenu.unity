@@ -565,7 +565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500858231640110350, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
       propertyPath: m_Name
-      value: Panel
+      value: ConnectScreen
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}

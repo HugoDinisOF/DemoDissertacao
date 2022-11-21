@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Use:
     Filter: 0
-    IgnoreStartedOverGui: 1
+    IgnoreStartedOverGui: 0
     RequiredFingerCount: 0
     RequiredMouseButtons: 1
     RequiredSelectable: {fileID: 0}

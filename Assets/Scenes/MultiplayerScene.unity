@@ -537,6 +537,7 @@ GameObject:
   - component: {fileID: 767178227}
   - component: {fileID: 767178229}
   - component: {fileID: 767178228}
+  - component: {fileID: 767178230}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -661,6 +662,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 767178226}
   m_CullTransparentMesh: 1
+--- !u!114 &767178230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767178226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddceaf65f35ad2e458e47f2e9aaba14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &968728644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,7 +1517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6500858231640110350, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
@@ -1682,7 +1695,7 @@ MonoBehaviour:
   m_Script: {fileID: -1826476478, guid: 8a9a760f95896c34689febc965510927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mWorldCenterMode: 2
+  mWorldCenterMode: 1
   mWorldCenter: {fileID: 0}
 --- !u!81 &1817850158
 AudioListener:

@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Dissertation.DebugLoggers;
 using Dissertation.Multiplayer;
+using UnityEngine.UI;
 
 namespace Dissertation.Core
 {
@@ -21,15 +22,21 @@ namespace Dissertation.Core
 
         private Rigidbody interactableRb;
         private LeanDragTranslateExt interactableLd;
+        private AbstractOwnershipAction networkInteractable;
 
         private bool enableRaycast;
 
         void Start()
         {
+            if (!IsOwner) return;
+
             // tries to get the component if it fails it is in (presumably) MP mode so grab the MainPlayerCamera
             if (!TryGetComponent<Camera>(out arCamera))
             {
                 arCamera = GameManager.instance.MainPlayerCamera.GetComponent<Camera>();
+                GameManager.instance.grabBtn.onClick.AddListener(Interact);
+                transform.position = GameManager.instance.MainPlayerCamera.transform.position;
+                transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
             }
             interactableObject = null;
             enableRaycast = true;
@@ -71,9 +78,12 @@ namespace Dissertation.Core
             }
             else
             {
-                // Move object towards the place it should be
-                Vector3 translation = transform.position + ray.direction * distanceToObject - interactableObject.transform.position;
-                interactableObject.transform.Translate(translation * moveSensitivity * Time.deltaTime);
+                // Move object towards the place it should be if it is the owner
+                if (networkInteractable.IsOwner && !networkInteractable.isRemoving)
+                {
+                    Vector3 translation = transform.position + ray.direction * distanceToObject - interactableObject.transform.position;
+                    interactableObject.transform.Translate(translation * moveSensitivity * Time.deltaTime);
+                }
             }
         }
 
@@ -84,8 +94,6 @@ namespace Dissertation.Core
             else
                 DetachObject();
         }
-
-
 
         public void AttachObject()
         {
@@ -100,10 +108,16 @@ namespace Dissertation.Core
             interactableRb.mass = 5;
 
             interactableLd.SetIsGrabbed(true);
-            enableRaycast = false;
+            DebugServerRpc("PreAttach");
 
-            interactableObject.GetComponent<AbstractOwnershipAction>().ChangeOwnership();
+            networkInteractable = interactableObject.GetComponent<AbstractOwnershipAction>();
+            if (networkInteractable.ChangeOwnership() || networkInteractable.IsOwner)
+            {
+                enableRaycast = false;
+                DebugStatics.grabReleaseBtnText = DebugStatics.releaseText;
+            }
 
+            DebugServerRpc("Attach");
             Debug.Log("Attach");
         }
 
@@ -116,16 +130,17 @@ namespace Dissertation.Core
 
             interactableLd.SetIsGrabbed(false);
             enableRaycast = true;
-            interactableObject.GetComponent<AbstractOwnershipAction>().RemoveOwnership();
+
+            networkInteractable.RemoveOwnership();
+            DebugStatics.grabReleaseBtnText = DebugStatics.grabText;
+
+            DebugServerRpc("Detach");
             Debug.Log("Detach");
         }
 
         public override void OnNetworkSpawn()
         {
             Debug.Log("CONNECTED TO SERVER");
-            GameManager.instance.grabBtn.onClick.AddListener(Interact);
-            transform.position = GameManager.instance.MainPlayerCamera.transform.position;
-            transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
         }
 
     }

@@ -220,9 +220,12 @@ namespace Dissertation.Core
 				}
 				else if (isMoving)
 				{
+					//FIXME: BIG PROBLEM HERE SPAMMING CALLS FOR NO REASON
 					RemoveOwnership();
+					isMoving = false;
 				}
-				base.Update();
+				if (!isRemoving || IsOwner)
+					base.Update();
 
 				rb.useGravity = fingers.Count == 0;
 				//RemoveOwnershipServerRpc();
