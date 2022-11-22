@@ -64,6 +64,31 @@ namespace Dissertation.Multiplayer
 			Spawn();
 		}
 
+		IEnumerator ChangeParentFailed()
+		{
+			int counter = 0;
+			bool success = false;
+
+			while (counter < 2) {
+				if (parent.GetComponent<NetworkObject>().IsSpawned)
+				{
+					transform.parent = parent;
+					counter = 2;
+					success = true;
+				}
+				else { 
+					yield return new WaitForSeconds(0.10f);
+					counter++;
+				}
+			}
+
+			if (!success) {
+				Debug.Log($"FAILED TO SPAWN {gameObject.name}");
+			}
+
+			yield return null;
+		}
+
 		void Spawn()
 		{
 			if (NetworkManager.Singleton.IsServer && !IsSpawned)
@@ -71,8 +96,19 @@ namespace Dissertation.Multiplayer
 				parent = transform.parent;
 				gameObject.SetActive(true);
 				NetworkObject.Spawn(true);
-				transform.parent = parent;
+				if (!(parent is null))
+				{
+					if (parent.GetComponent<NetworkObject>().IsSpawned)
+					{
+						transform.parent = parent;
+					}
+					else
+					{
+						StartCoroutine(ChangeParentFailed());
+					}
+				}
 			}
 		}
+
 	}
 }

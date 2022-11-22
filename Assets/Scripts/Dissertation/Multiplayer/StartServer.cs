@@ -6,6 +6,6 @@ public class StartServer : MonoBehaviour
 {
     public void TryStartServer() {
         NetworkManager.Singleton.StartServer();
-        SceneManager.LoadScene(1);
+        NetworkManager.Singleton.SceneManager.LoadScene("MultiplayerScene", LoadSceneMode.Single);
     }
 }
