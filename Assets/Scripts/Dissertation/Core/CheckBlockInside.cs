@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Dissertation.BlockLogic;
+using Dissertation.Multiplayer;
 
 namespace Dissertation.Core
 {
-    public class CheckBlockInside : MonoBehaviour
+    public class CheckBlockInside : AbstractOwnershipAction
     {
         public Block block;
         bool isInside = false;
@@ -13,8 +14,9 @@ namespace Dissertation.Core
         BoxCollider overlappedCollider = null;
         float volume;
 
-        private void Start()
+        override protected void Start()
         {
+            base.Start();
             collider = GetComponent<BoxCollider>();
             volume = collider.bounds.size.x * collider.bounds.size.y * collider.bounds.size.z;
             Debug.Log(volume);

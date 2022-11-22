@@ -201,8 +201,9 @@ namespace Dissertation.Core
 		bool isGrabbed = false;
 		bool isMoving = false;
 
-		private void Start()
+		override protected void Start()
 		{
+			base.Start();
 			rb = GetComponent<Rigidbody>();
 		}
 

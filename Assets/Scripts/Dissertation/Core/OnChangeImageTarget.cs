@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Dissertation.DebugLoggers;
+using Dissertation.Multiplayer;
 
 namespace Dissertation.Core
 {
-    public class OnChangeImageTarget : MonoBehaviour
+    public class OnChangeImageTarget : AbstractOwnershipAction
     {
         public static bool isImageTargetOn = false;
 

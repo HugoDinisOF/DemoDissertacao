@@ -8,6 +8,7 @@ namespace Dissertation.Multiplayer
 	public abstract class AbstractOwnershipAction : NetworkBehaviour
 	{
 		public bool isRemoving = false;
+		private Transform parent;
 
 		public bool ChangeOwnership()
 		{
@@ -58,5 +59,20 @@ namespace Dissertation.Multiplayer
 			Debug.Log(debugString);
 		}
 
+		virtual protected void Start()
+		{
+			Spawn();
+		}
+
+		void Spawn()
+		{
+			if (NetworkManager.Singleton.IsServer && !IsSpawned)
+			{
+				parent = transform.parent;
+				gameObject.SetActive(true);
+				NetworkObject.Spawn(true);
+				transform.parent = parent;
+			}
+		}
 	}
 }

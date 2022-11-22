@@ -26,8 +26,10 @@ namespace Dissertation.Core
 
         private bool enableRaycast;
 
-        void Start()
+        override protected void Start()
         {
+            base.Start();
+
             if (!IsOwner) return;
 
             // tries to get the component if it fails it is in (presumably) MP mode so grab the MainPlayerCamera

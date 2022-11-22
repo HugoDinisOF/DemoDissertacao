@@ -1172,6 +1172,7 @@ GameObject:
   - component: {fileID: 1620772103}
   - component: {fileID: 1620772110}
   - component: {fileID: 1620772111}
+  - component: {fileID: 1620772112}
   m_Layer: 0
   m_Name: ImageTarget
   m_TagString: Untagged
@@ -1319,6 +1320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50eaa9323ef10824baa9aaa5028b8fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRemoving: 0
 --- !u!114 &1620772111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,6 +1340,22 @@ MonoBehaviour:
   mCastedBehaviour: {fileID: 1620772108}
   mMeshFilter: {fileID: 0}
   mMeshRenderer: {fileID: 0}
+--- !u!114 &1620772112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620772102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 667288802
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!4 &1641597438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 932969681394910609, guid: 3d281cfb29ee8724987bad8334ba2d85, type: 3}
