@@ -6,7 +6,7 @@ using Dissertation.Multiplayer;
 
 namespace Dissertation.Core
 {
-    public class CheckBlockInside : AbstractOwnershipAction
+    public class CheckBlockInside : AbstractNetworkObject
     {
         public Block block;
         bool isInside = false;

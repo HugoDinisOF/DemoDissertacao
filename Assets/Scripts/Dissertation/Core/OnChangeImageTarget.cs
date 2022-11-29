@@ -6,7 +6,7 @@ using Dissertation.Multiplayer;
 
 namespace Dissertation.Core
 {
-    public class OnChangeImageTarget : AbstractOwnershipAction
+    public class OnChangeImageTarget : AbstractNetworkObject
     {
         public static bool isImageTargetOn = false;
 

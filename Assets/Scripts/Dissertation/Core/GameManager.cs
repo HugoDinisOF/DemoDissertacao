@@ -7,7 +7,7 @@ using Dissertation.Multiplayer;
 
 namespace Dissertation.Core
 {
-    public class GameManager : AbstractOwnershipAction
+    public class GameManager : AbstractNetworkObject
     {
 
         public static GameManager instance = null;
