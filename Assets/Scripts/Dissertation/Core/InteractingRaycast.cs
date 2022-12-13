@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Dissertation.DebugLoggers;
 using Dissertation.Multiplayer;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Dissertation.Core
 {
@@ -29,17 +30,12 @@ namespace Dissertation.Core
         override protected void Start()
         {
             base.Start();
+            NetworkManager.SceneManager.OnLoadComplete += OnChangeScene;
 
             if (!IsOwner) return;
 
             // tries to get the component if it fails it is in (presumably) MP mode so grab the MainPlayerCamera
-            if (!TryGetComponent<Camera>(out arCamera))
-            {
-                arCamera = GameManager.instance.MainPlayerCamera.GetComponent<Camera>();
-                GameManager.instance.grabBtn.onClick.AddListener(Interact);
-                transform.position = GameManager.instance.MainPlayerCamera.transform.position;
-                transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
-            }
+            OnChangeScene(0);
             interactableObject = null;
             enableRaycast = true;
         }
@@ -47,7 +43,8 @@ namespace Dissertation.Core
         void Update()
         {
             if (!IsOwner & isOnline) return;
-
+            if (GameManager.instance is null) return;
+            Debug.Log("Aqui");
             // Update the position of the player as they move their camera 
             transform.position = GameManager.instance.MainPlayerCamera.transform.position;
             transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
@@ -145,5 +142,31 @@ namespace Dissertation.Core
             Debug.Log("CONNECTED TO SERVER");
         }
 
+        public void OnChangeScene(ulong clientId, string sceneName="", LoadSceneMode loadSceneMode=LoadSceneMode.Single) {
+            Debug.Log($"{clientId} - ChangeScene");
+            if (!IsOwner) return;
+
+            if (!TryGetComponent<Camera>(out arCamera))
+            {
+                arCamera = Camera.main;
+                Debug.Log($"GameManager.instance -> {GameManager.instance}");
+                if (GameManager.instance != null)
+                {
+                    GameManager.instance.grabBtn.onClick.AddListener(Interact);
+                    transform.position = GameManager.instance.MainPlayerCamera.transform.position;
+                    transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
+                }
+                else {
+                    StartCoroutine(WaitForGameManagerToLoad());
+                }
+            }
+        }
+        public IEnumerator WaitForGameManagerToLoad() {
+            yield return new WaitForSeconds(0.5f);
+            if (GameManager.instance != null) yield break;
+            GameManager.instance.grabBtn.onClick.AddListener(Interact);
+            transform.position = GameManager.instance.MainPlayerCamera.transform.position;
+            transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
+        }
     }
 }
