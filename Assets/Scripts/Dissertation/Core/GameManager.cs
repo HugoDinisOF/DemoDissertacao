@@ -51,6 +51,12 @@ namespace Dissertation.Core
             }
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            instance = null;
+        }
+
         void GetAndSetBlocksDone()
         {
             blocksDone = new Dictionary<int, bool>();

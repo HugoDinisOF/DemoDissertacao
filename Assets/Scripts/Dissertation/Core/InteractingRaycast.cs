@@ -145,7 +145,7 @@ namespace Dissertation.Core
         public void OnChangeScene(ulong clientId, string sceneName="", LoadSceneMode loadSceneMode=LoadSceneMode.Single) {
             Debug.Log($"{clientId} - ChangeScene");
             if (!IsOwner) return;
-
+            
             if (!TryGetComponent<Camera>(out arCamera))
             {
                 arCamera = Camera.main;
@@ -163,7 +163,7 @@ namespace Dissertation.Core
         }
         public IEnumerator WaitForGameManagerToLoad() {
             yield return new WaitForSeconds(0.5f);
-            if (GameManager.instance != null) yield break;
+            if (GameManager.instance is null) yield break;
             GameManager.instance.grabBtn.onClick.AddListener(Interact);
             transform.position = GameManager.instance.MainPlayerCamera.transform.position;
             transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
