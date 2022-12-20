@@ -8,13 +8,23 @@ namespace Dissertation.Multiplayer {
     public class LobbyManager : AbstractNetworkObject
     {
         static ulong NOHOSTID = 0xFFFF;
+        
+        public static LobbyManager instance = null;
 
         public NetworkVariable<ulong> hostClientId = new NetworkVariable<ulong>(NOHOSTID);
         public NetworkVariable<bool> gameStarted = new NetworkVariable<bool>(false);
+        public NetworkVariable<List<ulong>> playerList = new NetworkVariable<List<ulong>>(new List<ulong>());
         
         protected override void Start()
         {
             base.Start();
+            if (!(instance is null))
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+            instance = this;
+
             if (NetworkManager.Singleton.IsServer) 
             { 
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
@@ -26,6 +36,7 @@ namespace Dissertation.Multiplayer {
         {
             if (NetworkManager.Singleton.IsServer)
             {
+                playerList.Value.Add(clientId);
                 if (hostClientId.Value == NOHOSTID)
                 {
                     hostClientId.Value = clientId;
@@ -37,6 +48,8 @@ namespace Dissertation.Multiplayer {
         {
             if (NetworkManager.Singleton.IsServer) { 
                 // other logic may be added here like UI;
+
+                // TODO: remove user from the list 
                 
                 // when `host` disconnects
                 if(hostClientId.Value == clientId) 

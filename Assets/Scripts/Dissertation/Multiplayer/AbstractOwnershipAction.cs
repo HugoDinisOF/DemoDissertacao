@@ -8,11 +8,15 @@ namespace Dissertation.Multiplayer
 	public abstract class AbstractOwnershipAction : AbstractNetworkObject
 	{
 		public bool isRemoving = false;
+		public static bool isAllowedToChangeOwnership = true;
 
 		public bool ChangeOwnership()
 		{
 			// If it already is the owner or another player is the owner don't do anything
 			if (IsOwner || !IsOwnedByServer) return false;
+
+			// FIXME: maybe look at joining the two bool
+			if (!isAllowedToChangeOwnership) return false;
 
 			StopAllCoroutines();
 			isRemoving = false;
@@ -24,6 +28,9 @@ namespace Dissertation.Multiplayer
 		{
 			// If it isn't the owner don't do anything
 			if (!IsOwner) return false;
+
+			//FIXME: maybe look at joining the two bool
+			if (!isAllowedToChangeOwnership) return false;
 
 			StartCoroutine(DelayRemoveOwnership(delay));
 			Debug.Log("RemoveOwnership");

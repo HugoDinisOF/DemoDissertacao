@@ -1054,6 +1054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1807711084}
   - component: {fileID: 1807711085}
+  - component: {fileID: 1807711087}
   - component: {fileID: 1807711086}
   m_Layer: 0
   m_Name: LobbyManager
@@ -1109,6 +1110,20 @@ MonoBehaviour:
     m_InternalValue: 65535
   gameStarted:
     m_InternalValue: 0
+  playerList:
+    m_InternalValue: 
+--- !u!114 &1807711087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807711083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3d0487e64364742ac3debcbf073199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1911676467
 GameObject:
   m_ObjectHideFlags: 0

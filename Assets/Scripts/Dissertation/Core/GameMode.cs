@@ -8,6 +8,8 @@ namespace Dissertation.Core
 { 
     public class GameMode : AbstractNetworkObject
     {
+        public static GameMode instance;
+
         public GameModeRules gameModeRules;
         public List<Transform> spawnLocations;
         public GameObject target;
@@ -20,12 +22,18 @@ namespace Dissertation.Core
 
         override protected void Start()
         {
+            if (!(instance is null))
+            {
+                Destroy(this);
+                return;
+            }
+            instance = this;
             if (!NetworkManager.Singleton.IsServer) return;
 
             // NOTE: base.Start is not called here because the GameManager should run it before  
             gameTimeLeft.Value = gameModeRules.gameTime;
+            AbstractOwnershipAction.isAllowedToChangeOwnership = gameModeRules.ownershipType == GameModeRules.OwnershipType.EVERYONE;
             SpawnPieces();
-
         }
 
         void Update()
@@ -39,6 +47,12 @@ namespace Dissertation.Core
                 timeToWinLeft -= Time.deltaTime;    
             }
 
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            instance = null;
         }
 
         void SpawnPieces() {
