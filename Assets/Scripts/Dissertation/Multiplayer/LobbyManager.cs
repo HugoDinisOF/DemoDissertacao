@@ -71,6 +71,8 @@ namespace Dissertation.Multiplayer {
         public void LoadNextScene(string sceneName) 
         {
             LoadSceneServerRpc(sceneName);
+            if (NetworkManager.Singleton.IsServer)
+                NetworkManager.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
 
         [ServerRpc(RequireOwnership = false)]

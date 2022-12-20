@@ -9,7 +9,7 @@ namespace Dissertation.Core
     public class GameMode : AbstractNetworkObject
     {
         public GameModeRules gameModeRules;
-        public Transform spawnLocation;
+        public List<Transform> spawnLocations;
         public GameObject target;
         public int score;
         public bool isWinning;
@@ -28,7 +28,6 @@ namespace Dissertation.Core
 
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (!NetworkManager.Singleton.IsServer) return;
@@ -43,14 +42,19 @@ namespace Dissertation.Core
         }
 
         void SpawnPieces() {
+            int spawnloc = 0;
             foreach (var pieceTypeCount in gameModeRules.gamePieces) {
                 for(int i = 0; i < pieceTypeCount.count; i++) { 
+                    // TODO: Add change of height when all the spots are filled
                     GameObject piece = Instantiate(pieceTypeCount.pieceObject, target.transform);
+                    piece.transform.position = spawnLocations[spawnloc % spawnLocations.Count].position;
                     NetworkObject networkObject = piece.GetComponent<NetworkObject>();
                     networkObject.Spawn();
+                    networkObject.TrySetParent(target);
                     if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE) { 
                         //TODO: Change Ownership to the right player in the playerId var
                     }
+                    spawnloc++;
                 }
             }
         }

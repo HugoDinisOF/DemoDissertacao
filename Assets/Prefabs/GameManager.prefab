@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4512738743635774686}
   - component: {fileID: 4512738743635774657}
   - component: {fileID: 4512738743635774687}
+  - component: {fileID: 8819831668215090377}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -47,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameObjectWin: {fileID: 0}
   grabBtn: {fileID: 0}
+  MainPlayerCamera: {fileID: 0}
+  timeToWin: 5
 --- !u!114 &4512738743635774687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +66,20 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &8819831668215090377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4512738743635774656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdfb7596f8d0fe74ebcca6c966666a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameModeRules: {fileID: 0}
+  spawnLocation: {fileID: 0}
+  target: {fileID: 0}
+  score: 0
+  isWinning: 0
