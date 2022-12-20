@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b6849d9aae0bc743bed238b6c5ed8ee, type: 3}
   m_Name: FirstLevel
   m_EditorClassIdentifier: 
-  maxPlayerCount: 0
+  maxPlayerCount: 2
   ownershipType: 0
+  gamePieces:
+  - pieceObject: {fileID: 932969681394910610, guid: 3d281cfb29ee8724987bad8334ba2d85, type: 3}
+    block:
+      id: 0
+      color: 0
+      blockType: 0
+    count: 4
+    playerId: 0
   gameTime: 0
+  timeToWin: 0
