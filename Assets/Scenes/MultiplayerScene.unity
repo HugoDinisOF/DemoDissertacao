@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.17652658, g: 0.2209512, b: 0.3032621, a: 1}
+  m_IndirectSpecularColor: {r: 0.17652689, g: 0.22095177, b: 0.30326328, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -923,7 +923,7 @@ Transform:
   m_Children:
   - {fileID: 772162181}
   m_Father: {fileID: 1620772106}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1498101079
 BoxCollider:
@@ -1001,8 +1001,8 @@ GameObject:
   - component: {fileID: 1620772104}
   - component: {fileID: 1620772103}
   - component: {fileID: 1620772110}
-  - component: {fileID: 1620772111}
   - component: {fileID: 1620772112}
+  - component: {fileID: 1620772113}
   m_Layer: 0
   m_Name: ImageTarget
   m_TagString: Untagged
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   mMotionHint: 1
   mTrackingOptimization: 0
   mTrackingOptimizationNeedsUpgrade: 0
-  mPreview: {fileID: 1620772111}
+  mPreview: {fileID: 1620772113}
 --- !u!114 &1620772110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,7 +1151,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50eaa9323ef10824baa9aaa5028b8fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1620772111
+--- !u!114 &1620772112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620772102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 667288802
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1620772113
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1170,22 +1186,6 @@ MonoBehaviour:
   mCastedBehaviour: {fileID: 1620772108}
   mMeshFilter: {fileID: 0}
   mMeshRenderer: {fileID: 0}
---- !u!114 &1620772112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1620772102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 667288802
-  AlwaysReplicateAsRoot: 0
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!4 &1641597438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 932969681394910609, guid: 3d281cfb29ee8724987bad8334ba2d85, type: 3}
@@ -2124,7 +2124,7 @@ PrefabInstance:
     - target: {fileID: 8819831668215090377, guid: 30e6adccf1fefe5478f5ce3a6a87da10, type: 3}
       propertyPath: gameModeRules
       value: 
-      objectReference: {fileID: 11400000, guid: 385e36876aaea70419b2bb63314631a4, type: 2}
+      objectReference: {fileID: 11400000, guid: cb1b3be58ffe83249a67aaae24630005, type: 2}
     - target: {fileID: 8819831668215090377, guid: 30e6adccf1fefe5478f5ce3a6a87da10, type: 3}
       propertyPath: spawnLocations.Array.size
       value: 8

@@ -28,11 +28,12 @@ namespace Dissertation.Core
                 return;
             }
             instance = this;
+            AbstractOwnershipAction.isAllowedToChangeOwnership = gameModeRules.ownershipType == GameModeRules.OwnershipType.EVERYONE;
+
             if (!NetworkManager.Singleton.IsServer) return;
 
             // NOTE: base.Start is not called here because the GameManager should run it before  
             gameTimeLeft.Value = gameModeRules.gameTime;
-            AbstractOwnershipAction.isAllowedToChangeOwnership = gameModeRules.ownershipType == GameModeRules.OwnershipType.EVERYONE;
             SpawnPieces();
         }
 
@@ -65,8 +66,8 @@ namespace Dissertation.Core
                     NetworkObject networkObject = piece.GetComponent<NetworkObject>();
                     networkObject.Spawn();
                     networkObject.TrySetParent(target);
-                    if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE) { 
-                        //TODO: Change Ownership to the right player in the playerId var
+                    if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE) {
+                        networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
                     }
                     spawnloc++;
                 }

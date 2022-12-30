@@ -10,17 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b6849d9aae0bc743bed238b6c5ed8ee, type: 3}
-  m_Name: FirstLevel
+  m_Name: SecondLevel
   m_EditorClassIdentifier: 
   maxPlayerCount: 2
-  ownershipType: 0
+  ownershipType: 1
   gamePieces:
   - pieceObject: {fileID: 932969681394910610, guid: 3d281cfb29ee8724987bad8334ba2d85, type: 3}
     block:
       id: 0
       color: 0
       blockType: 0
-    count: 4
+    count: 2
     playerId: 0
+  - pieceObject: {fileID: 3039912504120342055, guid: 506a09a6c574f7747b06c9a3c6328b0a, type: 3}
+    block:
+      id: 1
+      color: 1
+      blockType: 0
+    count: 2
+    playerId: 1
   gameTime: 0
-  timeToWin: 2
+  timeToWin: 0

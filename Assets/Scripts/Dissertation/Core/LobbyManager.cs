@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Dissertation.Multiplayer;
 
-namespace Dissertation.Multiplayer { 
+namespace Dissertation.Core { 
 
     public class LobbyManager : AbstractNetworkObject
     {
@@ -13,7 +14,7 @@ namespace Dissertation.Multiplayer {
 
         public NetworkVariable<ulong> hostClientId = new NetworkVariable<ulong>(NOHOSTID);
         public NetworkVariable<bool> gameStarted = new NetworkVariable<bool>(false);
-        public NetworkVariable<List<ulong>> playerList = new NetworkVariable<List<ulong>>(new List<ulong>());
+        public NetworkList<ulong> playerList = new NetworkList<ulong>();
         
         protected override void Start()
         {
@@ -30,13 +31,16 @@ namespace Dissertation.Multiplayer {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
                 NetworkManager.Singleton.OnClientConnectedCallback += Singleton_OnClientConnectedCallback;
             }
+
+            // NOTE: Don't destroy on Load has to be added in script or it doesn't work!!!
+            DontDestroyOnLoad(this.gameObject);
         }
 
         private void Singleton_OnClientConnectedCallback(ulong clientId)
         {
             if (NetworkManager.Singleton.IsServer)
             {
-                playerList.Value.Add(clientId);
+                playerList.Add(clientId);
                 if (hostClientId.Value == NOHOSTID)
                 {
                     hostClientId.Value = clientId;
