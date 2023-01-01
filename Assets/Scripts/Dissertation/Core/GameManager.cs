@@ -17,11 +17,8 @@ namespace Dissertation.Core
         // Time to win in seconds
         public float timeToWin = 5f;
 
-        private Dictionary<int, bool> blocksDone;
-        private bool isWinning;
         private NetworkVariable<float> countedTime = new NetworkVariable<float>(0f);
 
-        // Start is called before the first frame update
         override protected void Start()
         {
             base.Start();
@@ -33,21 +30,11 @@ namespace Dissertation.Core
             instance = this;
 
             Debug.Log($"Is Server: {NetworkManager.Singleton.IsServer}");
-
-            if (NetworkManager.Singleton.IsServer) {
-                Debug.Log("run this");
-                GetAndSetBlocksDone();
-                countedTime.Value = 0f;
-            }
         }
 
         void Update()
         {
-            if (NetworkManager.Singleton.IsServer && isWinning) {
-                countedTime.Value += Time.deltaTime;
-                if (countedTime.Value >= timeToWin) {
-                    WinGameClientRpc();
-                }
+            if (NetworkManager.Singleton.IsServer) {
             }
         }
 
@@ -57,45 +44,8 @@ namespace Dissertation.Core
             instance = null;
         }
 
-        void GetAndSetBlocksDone()
-        {
-            blocksDone = new Dictionary<int, bool>();
-            GameObject parent = GameObject.Find("ImageTarget");
-            foreach (CheckBlockInside child in parent.GetComponentsInChildren<CheckBlockInside>())
-            {
-                Debug.Log($"Child: {child.gameObject.name}");
-                blocksDone.Add(child.block.id, false);
-            }
-        }
-
-        public void SetBlockState(int id, bool value)
-        {
-            if (!NetworkManager.Singleton.IsServer) return;
-
-            Debug.Log($"{id} {value}");
-            Debug.Log($"{blocksDone[id]}");
-
-            // Don't do anything if value is the same;
-            if (!(blocksDone[id] ^ value))
-                return;
-
-            blocksDone[id] = value;
-            foreach (int key in blocksDone.Keys)
-            {
-                if (!blocksDone[key])
-                {
-                    isWinning = false;
-                    countedTime.Value = 0f;
-                    return;
-                }
-            }
-            isWinning = true;
-            Debug.Log("Is about to win");
-            //WinGame();
-        }
-
         [ClientRpc]
-        void WinGameClientRpc()
+        public void WinGameClientRpc()
         {
             gameObjectWin.SetActive(true);
             Debug.Log("GAME WIN");

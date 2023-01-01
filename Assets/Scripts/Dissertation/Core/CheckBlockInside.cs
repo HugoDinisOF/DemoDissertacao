@@ -29,11 +29,11 @@ namespace Dissertation.Core
                 float percentOverlap = CalculateOverlapPercent();
                 if (percentOverlap > 60)
                 {
-                    GameManager.instance.SetBlockState(block.id, true);
+                    GameMode.instance.SetBlockState(block.id, true);
                 }
                 else
                 {
-                    GameManager.instance.SetBlockState(block.id, false);
+                    GameMode.instance.SetBlockState(block.id, false);
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace Dissertation.Core
             {
                 Debug.Log("LEAVING");
                 isInside = false;
-                GameManager.instance.SetBlockState(block.id, false);
+                GameMode.instance.SetBlockState(block.id, false);
                 overlappedCollider = null;
             }
         }

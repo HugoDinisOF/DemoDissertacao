@@ -15,10 +15,11 @@ namespace Dissertation.Core
         public GameObject target;
         public int score;
         public bool isWinning;
+        public Dictionary<int, bool> blocksDone;
+        public NetworkVariable<float> gameTimeLeft = new NetworkVariable<float>(-1);
 
-
-        private NetworkVariable<float> gameTimeLeft = new NetworkVariable<float>(-1);
         private float timeToWinLeft = -1f;
+
 
         override protected void Start()
         {
@@ -35,6 +36,7 @@ namespace Dissertation.Core
             // NOTE: base.Start is not called here because the GameManager should run it before  
             gameTimeLeft.Value = gameModeRules.gameTime;
             SpawnPieces();
+            GetAndSetBlocksDone();
         }
 
         void Update()
@@ -45,7 +47,10 @@ namespace Dissertation.Core
 
             if (isWinning) 
             {
-                timeToWinLeft -= Time.deltaTime;    
+                timeToWinLeft -= Time.deltaTime;
+
+                if (timeToWinLeft < 0)
+                    GameManager.instance.WinGameClientRpc();
             }
 
         }
@@ -54,6 +59,42 @@ namespace Dissertation.Core
         {
             base.OnDestroy();
             instance = null;
+        }
+
+        void GetAndSetBlocksDone()
+        {
+            blocksDone = new Dictionary<int, bool>();
+            foreach (CheckBlockInside child in target.GetComponentsInChildren<CheckBlockInside>())
+            {
+                Debug.Log($"Child: {child.gameObject.name}");
+                blocksDone.Add(child.block.id, false);
+            }
+        }
+
+        public void SetBlockState(int id, bool value)
+        {
+            if (!NetworkManager.Singleton.IsServer) return;
+
+            Debug.Log($"{id} {value}");
+            Debug.Log($"{blocksDone[id]}");
+
+            // Don't do anything if value is the same;
+            if (!(blocksDone[id] ^ value))
+                return;
+
+            blocksDone[id] = value;
+            foreach (int key in blocksDone.Keys)
+            {
+                if (!blocksDone[key])
+                {
+                    isWinning = false;
+                    timeToWinLeft = gameModeRules.timeToWin;
+                    return;
+                }
+            }
+            isWinning = true;
+            Debug.Log("Is about to win");
+            //WinGame();
         }
 
         void SpawnPieces() {

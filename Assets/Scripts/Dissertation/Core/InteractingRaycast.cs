@@ -44,7 +44,7 @@ namespace Dissertation.Core
         {
             if (!IsOwner & isOnline) return;
             if (GameManager.instance is null) return;
-            Debug.Log("Aqui");
+
             // Update the position of the player as they move their camera 
             transform.position = GameManager.instance.MainPlayerCamera.transform.position;
             transform.rotation = GameManager.instance.MainPlayerCamera.transform.rotation;
