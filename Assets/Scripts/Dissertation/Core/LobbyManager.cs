@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
@@ -8,14 +7,35 @@ namespace Dissertation.Core {
 
     public class LobbyManager : AbstractNetworkObject
     {
+        // FIXME: When we come back to 'LobbyScene' fix buttons not having the onclick to here! 
+
+
         static ulong NOHOSTID = 0xFFFF;
-        
+
+        // NOTE: Maybe change this stuff to a separate static class
+        static string lobbySceneName = "LobbyScene";
+
+        // FIXME: This can't stay like this! please find a way to save a string!
+        public static Dictionary<string, ulong> levelNameDict = new Dictionary<string, ulong>()
+        {
+            {"MultiplayerScene", 0},
+            {"LobbyScene", 99999}
+        };
+
+        public static Dictionary<ulong, string> nextLevelDict = new Dictionary<ulong, string>()
+        {
+            {0, "MultiplayerScene"}
+        };
+
         public static LobbyManager instance = null;
 
         public NetworkVariable<ulong> hostClientId = new NetworkVariable<ulong>(NOHOSTID);
+        // FIXME: Don't let this stay as a ulong
+        public NetworkVariable<ulong> currentScene = new NetworkVariable<ulong>(0);
         public NetworkVariable<bool> gameStarted = new NetworkVariable<bool>(false);
         public NetworkList<ulong> playerList = new NetworkList<ulong>();
-        
+
+
         protected override void Start()
         {
             base.Start();
@@ -87,6 +107,7 @@ namespace Dissertation.Core {
 
         public void LoadNextScene(string sceneName) 
         {
+            // FIXME: Doesn't change currentScene if the server changes scene
             LoadSceneServerRpc(sceneName);
             if (NetworkManager.Singleton.IsServer)
                 NetworkManager.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
@@ -94,7 +115,16 @@ namespace Dissertation.Core {
 
         [ServerRpc(RequireOwnership = false)]
         public void LoadSceneServerRpc(string sceneName) {
+            currentScene.Value = levelNameDict[sceneName];
             NetworkManager.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        }
+
+        public void LoadNextLevel() {
+            LoadNextScene(nextLevelDict[currentScene.Value]);
+        }
+
+        public void LoadLobby() {
+            LoadNextScene(lobbySceneName);
         }
 
     }
