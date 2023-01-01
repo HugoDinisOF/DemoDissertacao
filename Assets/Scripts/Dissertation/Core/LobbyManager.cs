@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Collections;
 using Dissertation.Multiplayer;
 
 namespace Dissertation.Core { 
@@ -14,24 +15,15 @@ namespace Dissertation.Core {
 
         // NOTE: Maybe change this stuff to a separate static class
         static string lobbySceneName = "LobbyScene";
-
-        // FIXME: This can't stay like this! please find a way to save a string!
-        public static Dictionary<string, ulong> levelNameDict = new Dictionary<string, ulong>()
+        public static Dictionary<string, string> nextLevelDict = new Dictionary<string, string>()
         {
-            {"MultiplayerScene", 0},
-            {"LobbyScene", 99999}
-        };
-
-        public static Dictionary<ulong, string> nextLevelDict = new Dictionary<ulong, string>()
-        {
-            {0, "MultiplayerScene"}
+            {"MultiplayerScene", "MultiplayerScene"}
         };
 
         public static LobbyManager instance = null;
 
         public NetworkVariable<ulong> hostClientId = new NetworkVariable<ulong>(NOHOSTID);
-        // FIXME: Don't let this stay as a ulong
-        public NetworkVariable<ulong> currentScene = new NetworkVariable<ulong>(0);
+        public NetworkVariable<FixedString32Bytes> currentScene = new NetworkVariable<FixedString32Bytes>("");
         public NetworkVariable<bool> gameStarted = new NetworkVariable<bool>(false);
         public NetworkList<ulong> playerList = new NetworkList<ulong>();
 
@@ -115,12 +107,12 @@ namespace Dissertation.Core {
 
         [ServerRpc(RequireOwnership = false)]
         public void LoadSceneServerRpc(string sceneName) {
-            currentScene.Value = levelNameDict[sceneName];
+            currentScene.Value = sceneName;
             NetworkManager.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
 
         public void LoadNextLevel() {
-            LoadNextScene(nextLevelDict[currentScene.Value]);
+            LoadNextScene(nextLevelDict[currentScene.Value.ToString()]);
         }
 
         public void LoadLobby() {
