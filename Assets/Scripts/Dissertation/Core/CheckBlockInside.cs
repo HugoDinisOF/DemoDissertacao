@@ -9,6 +9,7 @@ namespace Dissertation.Core
     public class CheckBlockInside : AbstractNetworkObject
     {
         public Block block;
+        public float percentOverlapToCount = 50f;
         bool isInside = false;
         BoxCollider collider;
         BoxCollider overlappedCollider = null;
@@ -22,12 +23,14 @@ namespace Dissertation.Core
             Debug.Log(volume);
         }
 
+        /*
         void FixedUpdate()
         {
             if (isInside)
             {
                 float percentOverlap = CalculateOverlapPercent();
-                if (percentOverlap > 60)
+                Debug.Log(percentOverlap);
+                if (percentOverlap > percentOverlapToCount)
                 {
                     GameMode.instance.SetBlockState(block.id, true);
                 }
@@ -37,6 +40,7 @@ namespace Dissertation.Core
                 }
             }
         }
+        */
 
         float CalculateOverlapPercent()
         {
@@ -55,6 +59,7 @@ namespace Dissertation.Core
                     // NOTE: Considering all our colliders will be box colliders for now :P
                     overlappedCollider = (BoxCollider)other;
                     isInside = true;
+                    GameMode.instance.SetBlockState(block.id, true);
                 }
             }
         }
@@ -78,7 +83,7 @@ namespace Dissertation.Core
             var boundsA = a.bounds;
             var boundsB = b.bounds;
 
-            // first heck whether the two objects are even overlapping at all
+            // first check whether the two objects are even overlapping at all
             if (!boundsA.Intersects(boundsB))
             {
                 return Vector3.zero;

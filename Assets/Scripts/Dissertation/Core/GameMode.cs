@@ -50,7 +50,11 @@ namespace Dissertation.Core
                 timeToWinLeft -= Time.deltaTime;
 
                 if (timeToWinLeft < 0)
+                {
                     GameManager.instance.WinGameClientRpc();
+                    // FIXME: Maybe not the best solution since some magic may happen and the 
+                    isWinning = false;
+                }
             }
 
         }
@@ -75,8 +79,7 @@ namespace Dissertation.Core
         {
             if (!NetworkManager.Singleton.IsServer) return;
 
-            Debug.Log($"{id} {value}");
-            Debug.Log($"{blocksDone[id]}");
+            Debug.Log($"{id} {value} {blocksDone[id]}");
 
             // Don't do anything if value is the same;
             if (!(blocksDone[id] ^ value))
