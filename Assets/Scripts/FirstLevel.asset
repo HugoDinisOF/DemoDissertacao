@@ -23,4 +23,4 @@ MonoBehaviour:
     count: 4
     playerId: 0
   gameTime: 0
-  timeToWin: 2
+  timeToWin: 4

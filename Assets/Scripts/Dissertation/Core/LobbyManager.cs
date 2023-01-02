@@ -17,7 +17,8 @@ namespace Dissertation.Core {
         static string lobbySceneName = "LobbyScene";
         public static Dictionary<string, string> nextLevelDict = new Dictionary<string, string>()
         {
-            {"MultiplayerScene", "MultiplayerScene"}
+            {"MultiplayerScene", "Level2Scene"},
+            {"Level2Scene", "Level2Scene"}
         };
 
         public static LobbyManager instance = null;
