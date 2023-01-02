@@ -14,6 +14,7 @@ namespace Dissertation.Core
         public float minNearDistance = 0.09f;
         public float moveSensitivity = 1.2f;
         public bool isOnline = true;
+        public LineRenderer lineRenderer;
 
         private Camera arCamera;
         private GameObject interactableObject;
@@ -42,8 +43,14 @@ namespace Dissertation.Core
 
         void Update()
         {
-            if (!IsOwner & isOnline) return;
             if (GameManager.instance is null) return;
+
+            lineRenderer.SetPosition(0, transform.position);
+            lineRenderer.SetPosition(1, transform.position + transform.forward * 0.3f);
+            lineRenderer.startWidth = 0.005f;
+            lineRenderer.endWidth = 0.005f;  
+
+            if (!IsOwner & isOnline) return;
 
             // Update the position of the player as they move their camera 
             transform.position = GameManager.instance.MainPlayerCamera.transform.position;
@@ -54,7 +61,7 @@ namespace Dissertation.Core
             {
                 RaycastHit hit;
 
-                if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Interactable")))
+                if (Physics.Raycast(ray, out hit, 25f, LayerMask.GetMask("Interactable")))
                 {
                     Transform objectHit = hit.transform;
 
@@ -84,6 +91,22 @@ namespace Dissertation.Core
                     interactableObject.transform.Translate(translation * moveSensitivity * Time.deltaTime);
                 }
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (GameManager.instance is null) return;
+            
+            // FIXME: Ternary Operator
+            if (IsOwner) {
+                Gizmos.color = Color.white;
+            } 
+            else 
+            {
+                Gizmos.color = Color.blue;
+            }
+
+            Gizmos.DrawLine(transform.position, transform.position + transform.forward * 100f);
         }
 
         public void Interact()
