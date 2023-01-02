@@ -104,9 +104,8 @@ namespace Dissertation.Core
             int spawnloc = 0;
             foreach (var pieceTypeCount in gameModeRules.gamePieces) {
                 for(int i = 0; i < pieceTypeCount.count; i++) { 
-                    // TODO: Add change of height when all the spots are filled
                     GameObject piece = Instantiate(pieceTypeCount.pieceObject, target.transform);
-                    piece.transform.position = spawnLocations[spawnloc % spawnLocations.Count].position;
+                    piece.transform.position = spawnLocations[spawnloc % spawnLocations.Count].position + Mathf.Floor(spawnloc / spawnLocations.Count) * new Vector3(0,0.0221f,0);
                     NetworkObject networkObject = piece.GetComponent<NetworkObject>();
                     networkObject.Spawn();
                     networkObject.TrySetParent(target);
