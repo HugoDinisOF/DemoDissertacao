@@ -29,5 +29,9 @@ namespace Dissertation.Multiplayer
             }
             //SceneManager.LoadScene(1);
         }
+
+        public void SetTextInput(string address) {
+            inputField.text = address;
+        }
     }
 }
