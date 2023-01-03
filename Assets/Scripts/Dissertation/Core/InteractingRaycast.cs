@@ -45,10 +45,10 @@ namespace Dissertation.Core
         {
             if (GameManager.instance is null) return;
 
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, transform.position + transform.forward * 0.3f);
-            lineRenderer.startWidth = 0.005f;
-            lineRenderer.endWidth = 0.005f;  
+            //lineRenderer.SetPosition(0, transform.position);
+            //lineRenderer.SetPosition(1, transform.position + transform.forward * 0.3f);
+            //lineRenderer.startWidth = 0.005f;
+            //lineRenderer.endWidth = 0.005f;  
 
             if (!IsOwner & isOnline) return;
 

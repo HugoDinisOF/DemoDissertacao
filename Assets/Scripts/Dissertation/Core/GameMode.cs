@@ -18,7 +18,7 @@ namespace Dissertation.Core
         public Dictionary<int, bool> blocksDone;
         public NetworkVariable<float> gameTimeLeft = new NetworkVariable<float>(-1);
 
-        private float timeToWinLeft = -1f;
+        public float timeToWinLeft = -1f;
 
 
         override protected void Start()
@@ -35,6 +35,7 @@ namespace Dissertation.Core
 
             // NOTE: base.Start is not called here because the GameManager should run it before  
             gameTimeLeft.Value = gameModeRules.gameTime;
+            timeToWinLeft = gameModeRules.timeToWin;
             SpawnPieces();
             GetAndSetBlocksDone();
         }
@@ -52,6 +53,7 @@ namespace Dissertation.Core
                 if (timeToWinLeft < 0)
                 {
                     GameManager.instance.WinGameClientRpc();
+                    Debug.Log("win!");
                     // FIXME: Maybe not the best solution since some magic may happen and the 
                     isWinning = false;
                 }
