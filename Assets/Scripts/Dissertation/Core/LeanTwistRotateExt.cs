@@ -6,25 +6,21 @@ using Unity.Netcode;
 using CW.Common;
 using Dissertation.Multiplayer;
 
-// This class is the original LeanDragTranslate from Lean.Touch modified to work with networkbehaviour
-/// <summary>This component allows you to translate the current GameObject relative to the camera using the finger drag gesture.</summary>
-[HelpURL(LeanTouch.HelpUrlPrefix + "LeanDragTranslate")]
-[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Drag Translate")]
-public class LeanDragTranslate : AbstractOwnershipAction
+[HelpURL(LeanTouch.HelpUrlPrefix + "LeanTwistRotate")]
+[AddComponentMenu(LeanTouch.ComponentPathPrefix + "Twist Rotate")]
+public class LeanTwistRotate : AbstractOwnershipAction
 {
-
 	/// <summary>The method used to find fingers to use with this component. See LeanFingerFilter documentation for more information.</summary>
 	public LeanFingerFilter Use = new LeanFingerFilter(true);
 
-	/// <summary>The camera the translation will be calculated using.
+	/// <summary>The camera we will be used to calculate relative rotations.
 	/// None/null = MainCamera.</summary>
 	public Camera Camera { set { _camera = value; } get { return _camera; } }
 	[SerializeField] private Camera _camera;
 
-	/// <summary>The movement speed will be multiplied by this.
-	/// -1 = Inverted Controls.</summary>
-	public float Sensitivity { set { sensitivity = value; } get { return sensitivity; } }
-	[SerializeField] private float sensitivity = 1.0f;
+	/// <summary>Should the rotation be performed relative to the finger center?</summary>
+	public bool Relative { set { relative = value; } get { return relative; } }
+	[SerializeField] private bool relative;
 
 	/// <summary>If you want this component to change smoothly over time, then this allows you to control how quick the changes reach their target value.
 	/// -1 = Instantly change.
@@ -33,13 +29,11 @@ public class LeanDragTranslate : AbstractOwnershipAction
 	public float Damping { set { damping = value; } get { return damping; } }
 	[SerializeField] private float damping = -1.0f;
 
-	/// <summary>This allows you to control how much momentum is retained when the dragging fingers are all released.
-	/// NOTE: This requires <b>Dampening</b> to be above 0.</summary>
-	public float Inertia { set { inertia = value; } get { return inertia; } }
-	[SerializeField] [Range(0.0f, 1.0f)] private float inertia;
-
 	[SerializeField]
 	private Vector3 remainingTranslation;
+
+	[SerializeField]
+	private Quaternion remainingRotation = Quaternion.identity;
 
 	/// <summary>If you've set Use to ManuallyAddedFingers, then you can call this method to manually add a finger.</summary>
 	public void AddFinger(LeanFinger finger)
@@ -75,50 +69,67 @@ public class LeanDragTranslate : AbstractOwnershipAction
 	{
 		// Store
 		var oldPosition = transform.localPosition;
+		var oldRotation = transform.localRotation;
 
 		// Get the fingers we want to use
 		var fingers = Use.UpdateAndGetFingers();
 
-		// Calculate the screenDelta value based on these fingers
-		var screenDelta = LeanGesture.GetScreenDelta(fingers);
+		// Calculate the rotation values based on these fingers
+		var twistDegrees = LeanGesture.GetTwistDegrees(fingers);
 
-		if (screenDelta != Vector2.zero)
+		if (twistDegrees != 0.0f)
 		{
-			// Perform the translation
-			if (transform is RectTransform)
+			if (relative == true)
 			{
-				TranslateUI(screenDelta);
+				var twistScreenCenter = LeanGesture.GetScreenCenter(fingers);
+
+				if (transform is RectTransform)
+				{
+					TranslateUI(twistDegrees, twistScreenCenter);
+					RotateUI(twistDegrees);
+				}
+				else
+				{
+					Translate(twistDegrees, twistScreenCenter);
+					Rotate(twistDegrees);
+				}
 			}
 			else
 			{
-				Translate(screenDelta);
+				if (transform is RectTransform)
+				{
+					RotateUI(twistDegrees);
+				}
+				else
+				{
+					Rotate(twistDegrees);
+				}
 			}
 		}
 
 		// Increment
 		remainingTranslation += transform.localPosition - oldPosition;
+		remainingRotation *= Quaternion.Inverse(oldRotation) * transform.localRotation;
 
 		// Get t value
-		var factor = CwHelper.DampenFactor(Damping, Time.deltaTime);
+		var factor = CwHelper.DampenFactor(damping, Time.deltaTime);
 
 		// Dampen remainingDelta
 		var newRemainingTranslation = Vector3.Lerp(remainingTranslation, Vector3.zero, factor);
+		var newRemainingRotation = Quaternion.Slerp(remainingRotation, Quaternion.identity, factor);
 
 		// Shift this transform by the change in delta
 		transform.localPosition = oldPosition + remainingTranslation - newRemainingTranslation;
-
-		if (fingers.Count == 0 && Inertia > 0.0f && Damping > 0.0f)
-		{
-			newRemainingTranslation = Vector3.Lerp(newRemainingTranslation, remainingTranslation, Inertia);
-		}
+		transform.localRotation = oldRotation * Quaternion.Inverse(newRemainingRotation) * remainingRotation;
 
 		// Update remainingDelta with the dampened value
 		remainingTranslation = newRemainingTranslation;
+		remainingRotation = newRemainingRotation;
 	}
 
-	private void TranslateUI(Vector2 screenDelta)
+	protected virtual void TranslateUI(float twistDegrees, Vector2 twistScreenCenter)
 	{
-		var camera = this._camera;
+		var camera = _camera;
 
 		if (camera == null)
 		{
@@ -133,8 +144,12 @@ public class LeanDragTranslate : AbstractOwnershipAction
 		// Screen position of the transform
 		var screenPoint = RectTransformUtility.WorldToScreenPoint(camera, transform.position);
 
-		// Add the deltaPosition
-		screenPoint += screenDelta * Sensitivity;
+		// Twist screen point around the twistScreenCenter by twistDegrees
+		var twistRotation = Quaternion.Euler(0.0f, 0.0f, twistDegrees);
+		var screenDelta = twistRotation * (screenPoint - twistScreenCenter);
+
+		screenPoint.x = twistScreenCenter.x + screenDelta.x;
+		screenPoint.y = twistScreenCenter.y + screenDelta.y;
 
 		// Convert back to world space
 		var worldPoint = default(Vector3);
@@ -145,25 +160,51 @@ public class LeanDragTranslate : AbstractOwnershipAction
 		}
 	}
 
-	private void Translate(Vector2 screenDelta)
+	protected virtual void Translate(float twistDegrees, Vector2 twistScreenCenter)
 	{
 		// Make sure the camera exists
-		var camera = CwHelper.GetCamera(this._camera, gameObject);
+		var camera = CwHelper.GetCamera(_camera, gameObject);
 
 		if (camera != null)
 		{
 			// Screen position of the transform
 			var screenPoint = camera.WorldToScreenPoint(transform.position);
 
-			// Add the deltaPosition
-			screenPoint += (Vector3)screenDelta * Sensitivity;
+			// Twist screen point around the twistScreenCenter by twistDegrees
+			var twistRotation = Quaternion.Euler(0.0f, 0.0f, twistDegrees);
+			var screenDelta = twistRotation * ((Vector2)screenPoint - twistScreenCenter);
+
+			screenPoint.x = twistScreenCenter.x + screenDelta.x;
+			screenPoint.y = twistScreenCenter.y + screenDelta.y;
 
 			// Convert back to world space
 			transform.position = camera.ScreenToWorldPoint(screenPoint);
 		}
 		else
 		{
-			Debug.LogError("Failed to find camera. Either tag your camera as MainCamera, or set one in this component.", this);
+			Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
+		}
+	}
+
+	protected virtual void RotateUI(float twistDegrees)
+	{
+		transform.rotation *= Quaternion.Euler(0.0f, 0.0f, twistDegrees);
+	}
+
+	protected virtual void Rotate(float twistDegrees)
+	{
+		// Make sure the camera exists
+		var camera = CwHelper.GetCamera(_camera, gameObject);
+
+		if (camera != null)
+		{
+			var axis = transform.InverseTransformDirection(camera.transform.forward);
+
+			transform.rotation *= Quaternion.AngleAxis(twistDegrees, axis);
+		}
+		else
+		{
+			Debug.LogError("Failed to find camera. Either tag your cameras MainCamera, or set one in this component.", this);
 		}
 	}
 }
@@ -172,45 +213,47 @@ public class LeanDragTranslate : AbstractOwnershipAction
 namespace Lean.Touch.Editor
 {
 	using UnityEditor;
-	using TARGET = LeanDragTranslate;
+	using TARGET = LeanTwistRotate;
 
 	[CanEditMultipleObjects]
-	[CustomEditor(typeof(TARGET), true)]
-	public class LeanDragTranslate_Editor : CwEditor
+	[CustomEditor(typeof(TARGET))]
+	public class LeanTwistRotate_Editor : CwEditor
 	{
 		protected override void OnInspector()
 		{
 			TARGET tgt; TARGET[] tgts; GetTargets(out tgt, out tgts);
 
 			Draw("Use");
-			Draw("_camera", "The camera the translation will be calculated using.\n\nNone/null = MainCamera.");
-			Draw("sensitivity", "The movement speed will be multiplied by this.\n\n-1 = Inverted Controls.");
+			Draw("_camera", "The camera we will be used to calculate relative rotations.\n\nNone/null = MainCamera.");
+			Draw("relative", "Should the rotation be performed relative to the finger center?");
 			Draw("damping", "If you want this component to change smoothly over time, then this allows you to control how quick the changes reach their target value.\n\n-1 = Instantly change.\n\n1 = Slowly change.\n\n10 = Quickly change.");
-			Draw("inertia", "This allows you to control how much momentum is retained when the dragging fingers are all released.\n\nNOTE: This requires <b>Damping</b> to be above 0.");
 		}
 	}
 }
 #endif
 
+
+
+
+
 namespace Dissertation.Core
 {
-	[RequireComponent(typeof(Rigidbody))]
-	public class LeanDragTranslateExt : LeanDragTranslate
-	{
+    public class LeanTwistRotateExt : LeanTwistRotate
+    {
 
-		Rigidbody rb;
-		public bool isGrabbed = false;
-		public bool isMoving = false;
+		private Rigidbody rb;
+		private LeanDragTranslateExt translateExt;
 
 		override protected void Start()
 		{
 			base.Start();
 			rb = GetComponent<Rigidbody>();
+			translateExt = GetComponent<LeanDragTranslateExt>();
 		}
 
 		override protected void Update()
 		{
-			if (OnChangeImageTarget.isImageTargetOn & !isGrabbed)
+			if (OnChangeImageTarget.isImageTargetOn & !translateExt.isGrabbed)
 			{
 				var fingers = Use.UpdateAndGetFingers();
 				if (fingers.Count >= 1)
@@ -220,20 +263,19 @@ namespace Dissertation.Core
 					DebugServerRpc("Pre grab touch");
 					if (ChangeOwnership())
 						DebugServerRpc("Post grab touch");
-					isMoving = true;
+					translateExt.isMoving = true;
 				}
-				else if (isMoving)
+				else if (translateExt.isMoving)
 				{
 					//FIXME: BIG PROBLEM HERE SPAMMING CALLS FOR NO REASON
 					DebugServerRpc("pre remove touch");
 					RemoveOwnership();
 					DebugServerRpc("post remove touch");
-					isMoving = false;
+					translateExt.isMoving = false;
 				}
 				if (!isRemoving && IsOwner)
 					base.Update();
 
-				rb.useGravity = fingers.Count == 0;
 				//RemoveOwnershipServerRpc();
 			}
 			else
@@ -242,11 +284,6 @@ namespace Dissertation.Core
 				var fingers = Use.UpdateAndGetFingers();
 			}
 
-		}
-
-		public void SetIsGrabbed(bool state)
-		{
-			isGrabbed = state;
 		}
 	}
 }
