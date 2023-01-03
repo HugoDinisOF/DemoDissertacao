@@ -110,7 +110,10 @@ namespace Dissertation.Core
                     networkObject.Spawn();
                     networkObject.TrySetParent(target);
                     if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE) {
-                        networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
+                        AbstractOwnershipAction ownershipAction = piece.GetComponent<AbstractOwnershipAction>();
+                        ownershipAction.ownerID.Value = pieceTypeCount.playerId;
+                        if (pieceTypeCount.playerId != -1)
+                            networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
                     }
                     spawnloc++;
                 }
