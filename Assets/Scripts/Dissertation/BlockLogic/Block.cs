@@ -20,6 +20,8 @@ namespace Dissertation.BlockLogic
         {
             RED,
             BLUE,
+            YELLOW,
+            BLACK
         };
 
         public bool IsCompatible(Block block)
