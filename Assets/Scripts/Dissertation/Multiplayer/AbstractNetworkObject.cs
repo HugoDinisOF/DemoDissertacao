@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.SceneManagement;
 
 namespace Dissertation.Multiplayer 
 { 
@@ -17,6 +18,14 @@ namespace Dissertation.Multiplayer
 
 		virtual protected void Start()
 		{
+			//NetworkManager.SceneManager.OnLoadEventCompleted += CallSpawn;
+			//StartCoroutine(WaitSpawn());
+			Spawn();
+		}
+
+		IEnumerator WaitSpawn() 
+		{
+			yield return new WaitForSeconds(5f);
 			Spawn();
 		}
 
@@ -46,6 +55,11 @@ namespace Dissertation.Multiplayer
 			}
 
 			yield return null;
+		}
+
+		void CallSpawn(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
+			Spawn();
+			Debug.Log("Server load complete");
 		}
 
 		void Spawn()

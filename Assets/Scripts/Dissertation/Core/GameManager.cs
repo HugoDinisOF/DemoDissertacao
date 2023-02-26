@@ -4,6 +4,8 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.UI;
 using Dissertation.Multiplayer;
+using System;
+using Dissertation.DebugLoggers;
 
 namespace Dissertation.Core
 {
@@ -22,8 +24,10 @@ namespace Dissertation.Core
         override protected void Start()
         {
             base.Start();
+            LobbyManager.instance.DebugServerRpc($"{NetworkManager.Singleton.LocalClientId} - {gameObjectWin.name}-{grabBtn.name}-{MainPlayerCamera.name}-{GetHashCode()}-{NetworkObjectId}");
             if (!(instance is null))
             {
+                LobbyManager.instance.DebugServerRpc($"{NetworkManager.Singleton.LocalClientId} - Destroyed {NetworkObjectId}");
                 Destroy(this);
                 return;
             }
@@ -36,6 +40,7 @@ namespace Dissertation.Core
         {
             if (NetworkManager.Singleton.IsServer) {
             }
+            DebugStatics.detectTarget = NetworkObjectId.ToString() + " " + LobbyManager.instance.NetworkObjectId.ToString();
         }
 
         public override void OnDestroy()
@@ -47,8 +52,15 @@ namespace Dissertation.Core
         [ClientRpc]
         public void WinGameClientRpc()
         {
+            DebugServerRpc("Before Win");
+            if (gameObjectWin is null)
+            {
+                DebugServerRpc("Win is null");
+            }
             gameObjectWin.SetActive(true);
+            DebugServerRpc("After Win");
             Debug.Log("GAME WIN");
+
         }
 
         public float GetCountedTime() { return countedTime.Value; }

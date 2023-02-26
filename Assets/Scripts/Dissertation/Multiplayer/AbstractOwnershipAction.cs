@@ -17,7 +17,7 @@ namespace Dissertation.Multiplayer
 			if (IsOwner || !IsOwnedByServer) return false;
 
 			// FIXME: maybe look at joining the two bool
-			if (!isAllowedToChangeOwnership && ownerID.Value != -1) return false;
+			if (!isAllowedToChangeOwnership && ownerID.Value != -1 && ownerID.Value != (int)NetworkManager.Singleton.LocalClientId) return false;
 
 			StopAllCoroutines();
 			isRemoving = false;
@@ -31,7 +31,7 @@ namespace Dissertation.Multiplayer
 			if (!IsOwner) return false;
 
 			//FIXME: maybe look at joining the two bool
-			if (!isAllowedToChangeOwnership && ownerID.Value != -1) return false;
+			if (!isAllowedToChangeOwnership && ownerID.Value != -1 && ownerID.Value != (int)NetworkManager.Singleton.LocalClientId) return false;
 
 			StartCoroutine(DelayRemoveOwnership(delay));
 			Debug.Log("RemoveOwnership");

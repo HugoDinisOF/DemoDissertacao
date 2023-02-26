@@ -30,14 +30,35 @@ namespace Dissertation.Core
             }
             instance = this;
             AbstractOwnershipAction.isAllowedToChangeOwnership = gameModeRules.ownershipType == GameModeRules.OwnershipType.EVERYONE;
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+
 
             if (!NetworkManager.Singleton.IsServer) return;
 
             // NOTE: base.Start is not called here because the GameManager should run it before  
             gameTimeLeft.Value = gameModeRules.gameTime;
             timeToWinLeft = gameModeRules.timeToWin;
-            SpawnPieces();
+
+            //NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+            //SpawnPieces();
             GetAndSetBlocksDone();
+        }
+
+        private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+        {
+            Debug.Log("this ran");
+            Debug.Log("clients complete");
+            foreach (var client in clientsCompleted)
+            {
+                Debug.Log(client);
+            }
+            Debug.Log("clients timed out");
+            foreach (var client in clientsTimedOut)
+            {
+                Debug.Log(client);
+            }
+            if (!NetworkManager.Singleton.IsServer) return;
+            SpawnPieces();
         }
 
         void Update()
@@ -115,7 +136,10 @@ namespace Dissertation.Core
                         AbstractOwnershipAction ownershipAction = piece.GetComponent<AbstractOwnershipAction>();
                         ownershipAction.ownerID.Value = pieceTypeCount.playerId;
                         if (pieceTypeCount.playerId != -1)
-                            networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
+                        {
+                            ownershipAction.ownerID.Value = (int) LobbyManager.instance.playerList[pieceTypeCount.playerId];
+                            //networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
+                        }
                     }
                     spawnloc++;
                 }
