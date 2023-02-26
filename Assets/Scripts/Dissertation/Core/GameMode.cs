@@ -46,7 +46,6 @@ namespace Dissertation.Core
 
         private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
         {
-            Debug.Log("this ran");
             Debug.Log("clients complete");
             foreach (var client in clientsCompleted)
             {
@@ -84,8 +83,9 @@ namespace Dissertation.Core
 
         public override void OnDestroy()
         {
-            base.OnDestroy();
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= SceneManager_OnLoadEventCompleted;
             instance = null;
+            base.OnDestroy();
         }
 
         void GetAndSetBlocksDone()

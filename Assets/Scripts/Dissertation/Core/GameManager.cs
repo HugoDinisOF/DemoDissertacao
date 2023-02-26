@@ -45,8 +45,8 @@ namespace Dissertation.Core
 
         public override void OnDestroy()
         {
-            base.OnDestroy();
             instance = null;
+            base.OnDestroy();
         }
 
         [ClientRpc]
