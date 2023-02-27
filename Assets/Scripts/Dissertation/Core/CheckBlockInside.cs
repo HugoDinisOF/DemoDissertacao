@@ -54,12 +54,13 @@ namespace Dissertation.Core
             if (other.gameObject.layer == LayerMask.NameToLayer("Interactable") && overlappedCollider is null)
             {
                 Block otherBlock = other.GetComponent<BlockHolder>().block;
+                AbstractOwnershipAction ownershipAction = other.GetComponent<AbstractOwnershipAction>();
                 if (block.IsCompatible(otherBlock))
                 {
                     // NOTE: Considering all our colliders will be box colliders for now :P
                     overlappedCollider = (BoxCollider)other;
                     isInside = true;
-                    GameMode.instance.SetBlockState(block.id, true);
+                    GameMode.instance.SetBlockState(block.id, true, ownershipAction.lastOwner);
                 }
             }
         }
@@ -70,7 +71,7 @@ namespace Dissertation.Core
             {
                 Debug.Log("LEAVING");
                 isInside = false;
-                GameMode.instance.SetBlockState(block.id, false);
+                GameMode.instance.SetBlockState(block.id, false, 0);
                 overlappedCollider = null;
             }
         }

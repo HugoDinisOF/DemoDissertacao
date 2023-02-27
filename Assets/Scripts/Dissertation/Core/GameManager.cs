@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Dissertation.Multiplayer;
 using System;
 using Dissertation.DebugLoggers;
+using TMPro;
 
 namespace Dissertation.Core
 {
@@ -60,7 +61,22 @@ namespace Dissertation.Core
             gameObjectWin.SetActive(true);
             DebugServerRpc("After Win");
             Debug.Log("GAME WIN");
+            TextMeshProUGUI childTxt = null;
+            foreach (var child in gameObjectWin.GetComponentsInChildren<TextMeshProUGUI>())
+            {
+                if (child.gameObject.name == "WinTxt")
+                {
+                    childTxt = child;
+                    break;
+                }
+            }
 
+            childTxt.text = "";
+            for (int i = 0; i < LobbyManager.instance.playerStatsList.Count; i++)
+            {
+                var playerStats = LobbyManager.instance.playerStatsList[i];
+                childTxt.text += $"{i}: Objects Grabbed: {playerStats.touches}, Objects placed in the right place: {playerStats.piecesPutInPlace}\n";
+            }
         }
 
         public float GetCountedTime() { return countedTime.Value; }

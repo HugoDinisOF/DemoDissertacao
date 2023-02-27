@@ -146,6 +146,18 @@ namespace Dissertation.Core {
         public void AddTouchToStats(ulong localClientId) 
         {
             Debug.Log("Add Touch");
+            PlayerStats p = playerStatsList[(int)SearchForPlayerId(localClientId)];
+            p.touches += 1;
+            // TEST: idk if this line is needed
+            playerStatsList[(int)SearchForPlayerId(localClientId)] = p;
+        }
+
+        public void AddPieceInPlace(ulong localClientId) {
+            Debug.Log("Add PieceInPlace");
+            PlayerStats p = playerStatsList[(int)SearchForPlayerId(localClientId)];
+            p.piecesPutInPlace += 1;
+            // TEST: idk if this line is needed
+            playerStatsList[(int)SearchForPlayerId(localClientId)] = p;
         }
     }
 }

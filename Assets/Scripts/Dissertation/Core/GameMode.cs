@@ -98,7 +98,7 @@ namespace Dissertation.Core
             }
         }
 
-        public void SetBlockState(int id, bool value)
+        public void SetBlockState(int id, bool value, ulong lastOwnerId)
         {
             if (!NetworkManager.Singleton.IsServer) return;
 
@@ -109,6 +109,8 @@ namespace Dissertation.Core
                 return;
 
             blocksDone[id] = value;
+            if (value)
+                LobbyManager.instance.AddPieceInPlace(lastOwnerId);
             foreach (int key in blocksDone.Keys)
             {
                 if (!blocksDone[key])

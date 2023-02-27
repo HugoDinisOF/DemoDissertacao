@@ -9,6 +9,7 @@ namespace Dissertation.Multiplayer
 	{
 		public bool isRemoving = false;
 		public NetworkVariable<int> ownerID = new NetworkVariable<int>(1);
+		public ulong lastOwner = 0;
 		public static bool isAllowedToChangeOwnership = true;
 		public static AddTouch addTouchDelegate;
 
@@ -51,6 +52,7 @@ namespace Dissertation.Multiplayer
 		public void ChangeOwnershipServerRpc(ulong localClientId)
 		{
 			GetComponent<NetworkObject>().ChangeOwnership(localClientId);
+			lastOwner = localClientId;
 			Debug.Log("changed ownership");
 			if (addTouchDelegate != null)
 				addTouchDelegate(localClientId);
