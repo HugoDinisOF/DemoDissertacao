@@ -29,7 +29,7 @@ namespace Dissertation.Core {
         public NetworkVariable<FixedString32Bytes> currentScene = new NetworkVariable<FixedString32Bytes>("");
         public NetworkVariable<bool> gameStarted = new NetworkVariable<bool>(false);
         public NetworkList<ulong> playerList = new NetworkList<ulong>();
-
+        public NetworkList<PlayerStats> playerStatsList = new NetworkList<PlayerStats>();
 
         protected override void Start()
         {
@@ -45,6 +45,7 @@ namespace Dissertation.Core {
             { 
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
                 NetworkManager.Singleton.OnClientConnectedCallback += Singleton_OnClientConnectedCallback;
+                AbstractOwnershipAction.addTouchDelegate += AddTouchToStats;
             }
 
             // NOTE: Don't destroy on Load has to be added in script or it doesn't work!!!
@@ -111,6 +112,7 @@ namespace Dissertation.Core {
         [ServerRpc(RequireOwnership = false)]
         public void LoadSceneServerRpc(string sceneName) {
             currentScene.Value = sceneName;
+            ResetPlayerStats();
             NetworkManager.SceneManager.LoadScene(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Single);
         }
 
@@ -122,5 +124,28 @@ namespace Dissertation.Core {
             LoadNextScene(lobbySceneName);
         }
 
+        public void ResetPlayerStats() {
+            playerStatsList.Clear();
+
+            foreach (var i in playerList) {
+                PlayerStats p = new PlayerStats(0,0);
+                playerStatsList.Add(p);
+            }
+        }
+
+        public ulong SearchForPlayerId(ulong clientId) {
+            for (int i = 0; i < playerList.Count; i++) 
+            {
+                if (playerList[i] == clientId) {
+                    return (ulong) i;
+                }
+            }
+            return 0;
+        }
+
+        public void AddTouchToStats(ulong localClientId) 
+        {
+            Debug.Log("Add Touch");
+        }
     }
 }
