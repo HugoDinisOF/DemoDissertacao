@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Dissertation.Multiplayer;
 using Unity.Netcode;
+using Dissertation.DebugLoggers;
 
 namespace Dissertation.Core 
 { 
@@ -17,6 +18,8 @@ namespace Dissertation.Core
         public bool isWinning;
         public Dictionary<int, bool> blocksDone;
         public NetworkVariable<float> gameTimeLeft = new NetworkVariable<float>(-1);
+        public NetworkVariable<float> gameTimePassed = new NetworkVariable<float>(0f);
+
 
         public float timeToWinLeft = -1f;
 
@@ -62,9 +65,12 @@ namespace Dissertation.Core
 
         void Update()
         {
+            DebugStatics.detectTarget = Mathf.Round(gameTimePassed.Value).ToString();
+
             if (!NetworkManager.Singleton.IsServer) return;
 
             gameTimeLeft.Value -= Time.deltaTime;
+            gameTimePassed.Value += Time.deltaTime;
 
             if (isWinning) 
             {
@@ -111,6 +117,8 @@ namespace Dissertation.Core
             blocksDone[id] = value;
             if (value)
                 LobbyManager.instance.AddPieceInPlace(lastOwnerId);
+            else
+                LobbyManager.instance.RemovePieceInPlace(lastOwnerId);
             foreach (int key in blocksDone.Keys)
             {
                 if (!blocksDone[key])

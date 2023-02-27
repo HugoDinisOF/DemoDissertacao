@@ -19,16 +19,16 @@ namespace Dissertation.Core
                 // FIXME: Change this if we add rotation
                 childRB.constraints = RigidbodyConstraints.FreezeRotation;
             }
-            DebugStatics.detectTarget = "TRUE";
+            //DebugStatics.detectTarget = "TRUE";
             isImageTargetOn = true;
             try
             {
                 GameManager.instance.DebugServerRpc($"Target Found, {GameManager.instance.OwnerClientId}");
-                DebugStatics.detectTarget = GameManager.instance.NetworkObjectId.ToString();
+                //DebugStatics.detectTarget = GameManager.instance.NetworkObjectId.ToString();
             }
             catch (Exception e)
             {
-                DebugStatics.detectTarget = e.Message;
+                //DebugStatics.detectTarget = e.Message;
             }
             Debug.Log("TRUE");
         }
@@ -39,7 +39,7 @@ namespace Dissertation.Core
                 childRB.useGravity = false;
                 childRB.constraints = RigidbodyConstraints.FreezeAll;
             }
-            DebugStatics.detectTarget = "FALSE";
+            //DebugStatics.detectTarget = "FALSE";
             isImageTargetOn = false;
             GameManager.instance.DebugServerRpc($"Target Lost, {GameManager.instance.OwnerClientId}");
             Debug.Log("FALSE");

@@ -159,5 +159,14 @@ namespace Dissertation.Core {
             // TEST: idk if this line is needed
             playerStatsList[(int)SearchForPlayerId(localClientId)] = p;
         }
+
+        public void RemovePieceInPlace(ulong localClientId)
+        {
+            Debug.Log("Add PieceInPlace");
+            PlayerStats p = playerStatsList[(int)SearchForPlayerId(localClientId)];
+            p.piecesPutInPlace -= 1;
+            // TEST: idk if this line is needed
+            playerStatsList[(int)SearchForPlayerId(localClientId)] = p;
+        }
     }
 }

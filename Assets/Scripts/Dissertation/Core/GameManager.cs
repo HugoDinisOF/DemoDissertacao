@@ -41,7 +41,7 @@ namespace Dissertation.Core
         {
             if (NetworkManager.Singleton.IsServer) {
             }
-            DebugStatics.detectTarget = NetworkObjectId.ToString() + " " + LobbyManager.instance.NetworkObjectId.ToString();
+            //DebugStatics.detectTarget = NetworkObjectId.ToString() + " " + LobbyManager.instance.NetworkObjectId.ToString();
         }
 
         public override void OnDestroy()
