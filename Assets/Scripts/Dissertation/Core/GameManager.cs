@@ -17,10 +17,6 @@ namespace Dissertation.Core
         public GameObject gameObjectWin;
         public Button grabBtn;
         public GameObject MainPlayerCamera;
-        // Time to win in seconds
-        public float timeToWin = 5f;
-
-        private NetworkVariable<float> countedTime = new NetworkVariable<float>(0f);
 
         override protected void Start()
         {
@@ -75,11 +71,11 @@ namespace Dissertation.Core
             for (int i = 0; i < LobbyManager.instance.playerStatsList.Count; i++)
             {
                 var playerStats = LobbyManager.instance.playerStatsList[i];
-                childTxt.text += $"{i}: Objects Grabbed: {playerStats.touches}, Objects placed in the right place: {playerStats.piecesPutInPlace}\n";
+                string ifYou = LobbyManager.instance.playerList[i] == NetworkManager.Singleton.LocalClientId ? "(you)" : "";
+                childTxt.text += $"Player {i+1} {ifYou} : Objects Grabbed: {playerStats.touches}, Objects placed in the right place: {playerStats.piecesPutInPlace}\n";
             }
+            childTxt.text += $"\n\nYou took {Mathf.Round(GameMode.instance.gameTimePassed.Value)} seconds to complete the level";
         }
-
-        public float GetCountedTime() { return countedTime.Value; }
 
     }
 }
