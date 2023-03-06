@@ -22,6 +22,13 @@ namespace Dissertation.Core {
             {"Level3Scene", "Level4Scene"},
             {"Level4Scene", lobbySceneName}
         };
+        public static Dictionary<string, string> levelNameToScene = new Dictionary<string, string>()
+        {
+            {"Level 1", "MultiplayerScene"},
+            {"Level 2", "Level2Scene"},
+            {"Level 3", "Level3Scene"},
+            {"Level 4", "Level4Scene"},
+        };
 
         public static LobbyManager instance = null;
 
