@@ -72,7 +72,7 @@ namespace Dissertation.Core
                     }
 
                     interactableObject = objectHit.gameObject;
-                    DebugStatics.debugObject = objectHit.gameObject.ToString();
+                    DebugStatics.debugObject = objectHit.gameObject.name;
                     Debug.DrawRay(transform.position, ray.direction, Color.green);
                 }
                 else
