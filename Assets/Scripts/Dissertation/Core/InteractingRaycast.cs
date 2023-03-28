@@ -129,7 +129,7 @@ namespace Dissertation.Core
             //rb.isKinematic = true;
             interactableRb.mass = 5;
 
-            interactableLd.SetIsGrabbed(true);
+            interactableLd.SetIsGrabbedServerRpc(true);
             DebugServerRpc("PreAttach");
 
             networkInteractable = interactableObject.GetComponent<AbstractOwnershipAction>();
@@ -150,7 +150,7 @@ namespace Dissertation.Core
             //rb.isKinematic = false;
             interactableRb.mass = 1;
 
-            interactableLd.SetIsGrabbed(false);
+            interactableLd.SetIsGrabbedServerRpc(false);
             enableRaycast = true;
 
             networkInteractable.RemoveOwnership();
