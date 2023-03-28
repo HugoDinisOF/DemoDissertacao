@@ -250,7 +250,7 @@ namespace Dissertation.Core
 			rb = GetComponent<Rigidbody>();
 			translateExt = GetComponent<LeanDragTranslateExt>();
 		}
-
+		/*
 		override protected void Update()
 		{
 			if (OnChangeImageTarget.isImageTargetOn & !translateExt.isGrabbed)
@@ -285,5 +285,6 @@ namespace Dissertation.Core
 			}
 
 		}
+		*/
 	}
 }
