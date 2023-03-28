@@ -48,7 +48,7 @@ namespace Dissertation.Core
                 blockObject.transform.Translate(Vector3.Lerp(blockObject.transform.position, transform.position, 0.3f) - blockObject.transform.position);
 
                 if (Vector3.Distance(transform.position, blockObject.transform.position) < 0.001f)
-                    blockObject.transform.Translate(transform.position);
+                    blockObject.transform.Translate(transform.position-blockObject.transform.position);
 
                 /*
                 float percentOverlap = CalculateOverlapPercent();
