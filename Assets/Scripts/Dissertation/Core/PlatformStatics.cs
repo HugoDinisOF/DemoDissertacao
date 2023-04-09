@@ -6,5 +6,5 @@ public class PlatformStatics
         VR
     }
 
-    public static BuildPlatform platform = BuildPlatform.MOBILE;
+    public static BuildPlatform platform = BuildPlatform.VR;
 }
