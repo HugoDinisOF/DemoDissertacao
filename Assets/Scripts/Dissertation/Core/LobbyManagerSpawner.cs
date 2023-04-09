@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Dissertation.Multiplayer;
 using Unity.Netcode;
@@ -10,7 +11,7 @@ namespace Dissertation.Core {
     {
         public GameObject lobbyManager;
         public GameObject buttonPrefab;
-        public GameObject buttonLayout;
+        public List<GameObject> buttonLayoutList;
 
         protected override void Start()
         {
@@ -21,13 +22,20 @@ namespace Dissertation.Core {
                 NetworkObject networkObject = lobby.GetComponent<NetworkObject>();
                 networkObject.Spawn();
             }
-            foreach (string levelName in LobbyManager.levelNameToScene.Keys) {
+            foreach (GameObject buttonLayout in buttonLayoutList) {
+                SpawnButtons(buttonLayout);
+            }
+        }
+        void SpawnButtons(GameObject buttonLayout) {
+            foreach (string levelName in LobbyManager.levelNameToScene.Keys)
+            {
                 GameObject buttonObject = Instantiate(buttonPrefab, buttonLayout.transform);
                 Button button = buttonObject.GetComponent<Button>();
-                button.onClick.AddListener(delegate { LobbyManager.instance.LoadNextScene(LobbyManager.levelNameToScene[levelName]);});
+                button.onClick.AddListener(delegate { LobbyManager.instance.LoadNextScene(LobbyManager.levelNameToScene[levelName]); });
                 TextMeshProUGUI textmesh = buttonObject.GetComponentInChildren<TextMeshProUGUI>();
                 textmesh.text = levelName;
             }
         }
+
     }
 }
