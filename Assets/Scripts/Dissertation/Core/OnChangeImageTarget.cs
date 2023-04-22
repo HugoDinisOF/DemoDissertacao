@@ -4,12 +4,15 @@ using UnityEngine;
 using Dissertation.DebugLoggers;
 using Dissertation.Multiplayer;
 using System;
+using Vuforia;
 
 namespace Dissertation.Core
 {
     public class OnChangeImageTarget : MonoBehaviour
     {
         public static bool isImageTargetOn = false;
+
+
 
         public void OnTargetFound()
         {
@@ -34,15 +37,38 @@ namespace Dissertation.Core
         }
         public void OnTargetLost()
         {
-            foreach (Rigidbody childRB in GetComponentsInChildren<Rigidbody>())
+            // https://answers.unity.com/questions/1638624/how-can-i-keep-objects-invisible-when-vuforia-imag.html
+            if (PlatformStatics.platform != PlatformStatics.BuildPlatform.MOBILE)
             {
-                childRB.useGravity = false;
-                childRB.constraints = RigidbodyConstraints.FreezeAll;
+                var rendererComponents = GetComponentsInChildren<Renderer>(true);
+                var colliderComponents = GetComponentsInChildren<Collider>(true);
+                var canvasComponents = GetComponentsInChildren<Canvas>(true);
+
+                //Vuforia's code:
+
+                // Enable rendering:
+                foreach (var component in rendererComponents)
+                    component.enabled = true;
+
+                // Enable colliders:
+                foreach (var component in colliderComponents)
+                    component.enabled = true;
+
+                // Enable canvas':
+                foreach (var component in canvasComponents)
+                    component.enabled = true;
             }
-            //DebugStatics.detectTarget = "FALSE";
-            isImageTargetOn = false;
-            GameManager.instance.DebugServerRpc($"Target Lost, {GameManager.instance.OwnerClientId}");
-            Debug.Log("FALSE");
+            else { 
+                foreach (Rigidbody childRB in GetComponentsInChildren<Rigidbody>())
+                {
+                    childRB.useGravity = false;
+                    childRB.constraints = RigidbodyConstraints.FreezeAll;
+                }
+                //DebugStatics.detectTarget = "FALSE";
+                isImageTargetOn = false;
+                GameManager.instance.DebugServerRpc($"Target Lost, {GameManager.instance.OwnerClientId}");
+                Debug.Log("FALSE");
+            }
         }
 
     }
