@@ -14,13 +14,26 @@ namespace Dissertation.Core
     {
 
         public static GameManager instance = null;
-        public GameObject gameObjectWin;
+        public GameObject gameObjectWinMobile;
+        public GameObject gameObjectWinVR;
         public Button grabBtn;
         public GameObject MainPlayerCamera;
+
+        private GameObject gameObjectWin;
 
         override protected void Start()
         {
             base.Start();
+            // could be a ternary operator use case
+            if (PlatformStatics.platform == PlatformStatics.BuildPlatform.VR)
+            {
+                gameObjectWin = gameObjectWinVR;
+            }
+            else 
+            {
+                gameObjectWin = gameObjectWinMobile;
+            }
+
             LobbyManager.instance.DebugServerRpc($"{NetworkManager.Singleton.LocalClientId} - {gameObjectWin.name}-{grabBtn.name}-{MainPlayerCamera.name}-{GetHashCode()}-{NetworkObjectId}");
             if (!(instance is null))
             {
