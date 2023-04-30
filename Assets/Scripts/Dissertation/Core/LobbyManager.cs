@@ -64,6 +64,7 @@ namespace Dissertation.Core {
             if (NetworkManager.Singleton.IsServer)
             {
                 playerList.Add(clientId);
+                Debug.Log("player entered");
                 if (hostClientId.Value == NOHOSTID)
                 {
                     hostClientId.Value = clientId;
