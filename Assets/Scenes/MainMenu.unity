@@ -202,7 +202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &96031010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1330,6 +1330,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 96031013}
     m_Modifications:
+    - target: {fileID: 251798433267302044, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 192.168.3.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500858231426790754, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
+      propertyPath: m_HideMobileInput
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6500858231640110349, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
