@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level4Scene.unity
     guid: a0325b65e2de2e749944f77b29c0ba08
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/VRScene.unity
     guid: 9b73a02565f0ffa47bff0a397b0289d8
   m_configObjects:
