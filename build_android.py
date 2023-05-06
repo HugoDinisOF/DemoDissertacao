@@ -2,7 +2,8 @@ import time
 import os
 import shutil
 import subprocess
-import command
+#import command
+import sys
 
 def remove():
     if not os.path.exists("./TempBuildFiles"):
@@ -44,15 +45,25 @@ def bringback():
     #    executable="C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe")
 
     #print(p.communicate())
-
-    shutil.move("./TempBuildFiles/com.unity.xr.core-utils~", "./Packages/com.unity.xr.core-utils~")
-    shutil.move("./TempBuildFiles/com.unity.xr.interaction.toolkit~", "./Packages/com.unity.xr.interaction.toolkit~")
-    shutil.move("./TempBuildFiles/com.unity.xr.legacyinputhelpers~", "./Packages/com.unity.xr.legacyinputhelpers~")
-    shutil.move("./TempBuildFiles/com.unity.xr.management~", "./Packages/com.unity.xr.management~")
-    shutil.move("./TempBuildFiles/com.unity.xr.oculus~", "./Packages/com.unity.xr.oculus~")
-    shutil.move("./TempBuildFiles/com.unity.xr.openxr~", "./Packages/com.unity.xr.openxr~")
-
+    try:
+        shutil.move("./TempBuildFiles/com.unity.xr.core-utils~", "./Packages/com.unity.xr.core-utils~")
+        shutil.move("./TempBuildFiles/com.unity.xr.interaction.toolkit~", "./Packages/com.unity.xr.interaction.toolkit~")
+        shutil.move("./TempBuildFiles/com.unity.xr.legacyinputhelpers~", "./Packages/com.unity.xr.legacyinputhelpers~")
+        shutil.move("./TempBuildFiles/com.unity.xr.management~", "./Packages/com.unity.xr.management~")
+        shutil.move("./TempBuildFiles/com.unity.xr.oculus~", "./Packages/com.unity.xr.oculus~")
+        shutil.move("./TempBuildFiles/com.unity.xr.openxr~", "./Packages/com.unity.xr.openxr~")
+    except:
+        pass
     shutil.move("./TempBuildFiles/XR Interaction Toolkit", "./Assets/Samples")
 
 
-bringback()
+arg = sys.argv[1]
+
+if arg == "-r":
+    remove()
+    print("removed")
+elif arg == "-b":
+    bringback()
+    print("brought back")
+else:
+    print("No valid argument given")
