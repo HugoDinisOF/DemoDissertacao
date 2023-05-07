@@ -35,6 +35,7 @@ namespace Dissertation.Multiplayer
 			//FIXME: maybe look at joining the two bool
 			if (!isAllowedToChangeOwnership && ownerID.Value != -1 && ownerID.Value != (int)NetworkManager.Singleton.LocalClientId) return false;
 
+			isRemoving = true;
 			StartCoroutine(DelayRemoveOwnership(delay));
 			Debug.Log("RemoveOwnership");
 			return true;
@@ -59,10 +60,10 @@ namespace Dissertation.Multiplayer
 		}
 
 		[ServerRpc(RequireOwnership = false)]
-		public void RemoveOwnershipServerRpc()
+		public virtual void RemoveOwnershipServerRpc()
 		{
 			Debug.Log("removed ownership");
-			GetComponent<NetworkObject>().RemoveOwnership();
+			GetComponent<NetworkObject>().ChangeOwnership(NetworkManager.LocalClientId);
 		}
 
 		public delegate void AddTouch(ulong clientId);

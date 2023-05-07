@@ -4,6 +4,7 @@ using UnityEngine;
 using Dissertation.Multiplayer;
 using Unity.Netcode;
 using Dissertation.DebugLoggers;
+using System;
 
 namespace Dissertation.Core 
 { 
@@ -136,22 +137,32 @@ namespace Dissertation.Core
         void SpawnPieces() {
             int spawnloc = 0;
             foreach (var pieceTypeCount in gameModeRules.gamePieces) {
-                for(int i = 0; i < pieceTypeCount.count; i++) { 
-                    GameObject piece = Instantiate(pieceTypeCount.pieceObject, target.transform);
-                    piece.transform.position = spawnLocations[spawnloc % spawnLocations.Count].position + Mathf.Floor(spawnloc / spawnLocations.Count) * new Vector3(0,0.0221f,0);
-                    NetworkObject networkObject = piece.GetComponent<NetworkObject>();
-                    networkObject.Spawn();
-                    networkObject.TrySetParent(target);
-                    if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE) {
-                        AbstractOwnershipAction ownershipAction = piece.GetComponent<AbstractOwnershipAction>();
-                        ownershipAction.ownerID.Value = pieceTypeCount.playerId;
-                        if (pieceTypeCount.playerId != -1)
+                for(int i = 0; i < pieceTypeCount.count; i++) {
+                    Debug.Log("spawning");
+                    try
+                    {
+                        GameObject piece = Instantiate(pieceTypeCount.pieceObject, target.transform);
+                        piece.transform.position = spawnLocations[spawnloc % spawnLocations.Count].position + Mathf.Floor(spawnloc / spawnLocations.Count) * new Vector3(0, 0.0221f, 0);
+                        NetworkObject networkObject = piece.GetComponent<NetworkObject>();
+                        networkObject.Spawn();
+                        networkObject.TrySetParent(target);
+                        if (gameModeRules.ownershipType != GameModeRules.OwnershipType.EVERYONE)
                         {
-                            ownershipAction.ownerID.Value = (int) LobbyManager.instance.playerList[pieceTypeCount.playerId];
-                            //networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
+                            AbstractOwnershipAction ownershipAction = piece.GetComponent<AbstractOwnershipAction>();
+                            ownershipAction.ownerID.Value = pieceTypeCount.playerId;
+                            if (pieceTypeCount.playerId != -1)
+                            {
+                                ownershipAction.ownerID.Value = (int)LobbyManager.instance.playerList[pieceTypeCount.playerId];
+                                //networkObject.ChangeOwnership(LobbyManager.instance.playerList[pieceTypeCount.playerId]);
+                            }
                         }
+                        spawnloc++;
                     }
-                    spawnloc++;
+                    catch (Exception e) 
+                    {
+                        Debug.Log(e.Message);
+                    }
+
                 }
             }
         }

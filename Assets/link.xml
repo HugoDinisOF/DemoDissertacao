@@ -1,0 +1,3 @@
+<linker>
+<assembly fullname="Unity.Multiplayer.Tools" preserve="all"/>
+</linker>

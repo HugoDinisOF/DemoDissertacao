@@ -18,13 +18,15 @@ namespace Dissertation.Multiplayer
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(inputField.text, 7777);
                 if (NetworkManager.Singleton.StartClient())
                 {
-                    gameObject.SetActive(false);
+                    inputField.gameObject.SetActive(false);
                     //Destroy(uiCamera);
                     return;
                 }
                 DebugStatics.debugObject = "fail connecting";
             } catch (Exception e)
             {
+                inputField.gameObject.SetActive(true);
+                inputField.text = e.Message;
                 DebugStatics.debugObject = e.Message;
             }
             //SceneManager.LoadScene(1);

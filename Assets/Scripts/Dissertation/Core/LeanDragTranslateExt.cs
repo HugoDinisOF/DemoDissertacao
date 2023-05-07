@@ -217,9 +217,13 @@ namespace Dissertation.Core
 				{
 					Debug.Log("Trying to grab!");
 					rb.velocity = Vector3.zero;
+					Debug.Log("Pre grab touch");
 					DebugServerRpc("Pre grab touch");
 					if (ChangeOwnership())
+					{
+						Debug.Log("Post grab touch");
 						DebugServerRpc("Post grab touch");
+					}
 					isMoving = true;
 				}
 				else if (isMoving)
@@ -229,11 +233,15 @@ namespace Dissertation.Core
 					RemoveOwnership();
 					DebugServerRpc("post remove touch");
 					isMoving = false;
+					//rb.useGravity = true;
 				}
 				if (!isRemoving && IsOwner)
+				{
 					base.Update();
-
-				rb.useGravity = fingers.Count == 0;
+					DebugServerRpc("Moving");
+					rb.useGravity = fingers.Count == 0;
+				}
+				
 				//RemoveOwnershipServerRpc();
 			}
 			else
@@ -248,5 +256,12 @@ namespace Dissertation.Core
 		{
 			isGrabbed = state;
 		}
-	}
+
+		[ServerRpc(RequireOwnership = false)]
+		public override void RemoveOwnershipServerRpc()
+        {
+            base.RemoveOwnershipServerRpc();
+			rb.useGravity = true;
+        }
+    }
 }
