@@ -5,7 +5,7 @@ using UnityEngine;
     using UnityEngine.XR.Interaction.Toolkit;
     using UnityEngine.XR.Interaction.Toolkit.Transformers;
 #endif
-using Dissertation.Core;
+//using Dissertation.Core;
 
 #if !UNITY_ANDROID
     public class MPVRGrabTransformer : XRGeneralGrabTransformer

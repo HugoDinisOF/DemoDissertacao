@@ -7,6 +7,7 @@ using Dissertation.Multiplayer;
 using System;
 using Dissertation.DebugLoggers;
 using TMPro;
+using Dissertation.VR;
 
 namespace Dissertation.Core
 {
@@ -18,6 +19,8 @@ namespace Dissertation.Core
         public GameObject gameObjectWinVR;
         public Button grabBtn;
         public GameObject MainPlayerCamera;
+
+        public GameObject NetworkArrow;
 
         private GameObject gameObjectWin;
 
@@ -90,5 +93,13 @@ namespace Dissertation.Core
             childTxt.text += $"\n\nYou took {Mathf.Round(GameMode.instance.gameTimePassed.Value)} seconds to complete the level";
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void SpawnNetworkArrowServerRpc(Vector3 position, Quaternion rotation, ulong clientId, ulong arrowId) {
+            GameObject arrow = Instantiate(NetworkArrow, position, rotation);
+            arrow.GetComponent<NetworkObject>().Spawn();
+            arrow.GetComponent<NetworkObject>().ChangeOwnership(clientId);
+            arrow.GetComponent<NetworkArrow>().id.Value = arrowId;
+            arrow.GetComponent<NetworkArrow>().localClientId.Value = clientId;
+        }
     }
 }
