@@ -98,6 +98,7 @@ namespace Dissertation.Core
             GameObject arrow = Instantiate(NetworkArrow, position, rotation);
             arrow.GetComponent<NetworkObject>().Spawn();
             arrow.GetComponent<NetworkObject>().ChangeOwnership(clientId);
+            arrow.GetComponent<NetworkObject>().DestroyWithScene = true;
             arrow.GetComponent<NetworkArrow>().id.Value = arrowId;
             arrow.GetComponent<NetworkArrow>().localClientId.Value = clientId;
         }

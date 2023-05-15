@@ -46,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 876d680b49c26fb429b25b5c53630c18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameObjectWin: {fileID: 0}
+  gameObjectWinMobile: {fileID: 0}
+  gameObjectWinVR: {fileID: 0}
   grabBtn: {fileID: 0}
   MainPlayerCamera: {fileID: 0}
-  timeToWin: 5
+  NetworkArrow: {fileID: 5724767244543430922, guid: f4956e6a872351d4e8d0e40070d21f5d, type: 3}
 --- !u!114 &4512738743635774687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +65,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 951099334
   AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
 --- !u!114 &8819831668215090377
@@ -79,7 +83,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameModeRules: {fileID: 0}
-  spawnLocation: {fileID: 0}
+  spawnLocations: []
   target: {fileID: 0}
   score: 0
   isWinning: 0
+  gameTimeLeft:
+    m_InternalValue: -1
+  gameTimePassed:
+    m_InternalValue: 0
+  timeToWinLeft: -1
