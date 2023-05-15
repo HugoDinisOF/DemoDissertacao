@@ -45,6 +45,7 @@ namespace Dissertation.VR {
                 }
             }
             Debug.Log($"Arrow with id {id.Value} not found on client {localClientId.Value}");
+            DebugServerRpc($"Arrow with id {id.Value} not found on client {localClientId.Value}");
         }
     }
 }

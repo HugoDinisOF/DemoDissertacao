@@ -418,7 +418,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 251798433267302044, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 192.168.68.116
+      value: 192.168.1.56
       objectReference: {fileID: 0}
     - target: {fileID: 6500858230723978806, guid: f8f613dc35ba83c44b904bc0c5ef0684, type: 3}
       propertyPath: m_IsActive
@@ -563,6 +563,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!114 &396780776
 MonoBehaviour:
   m_ObjectHideFlags: 0

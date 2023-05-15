@@ -50,8 +50,8 @@ def bringback():
         shutil.move("./TempBuildFiles/com.unity.xr.interaction.toolkit~", "./Packages/com.unity.xr.interaction.toolkit~")
         shutil.move("./TempBuildFiles/com.unity.xr.legacyinputhelpers~", "./Packages/com.unity.xr.legacyinputhelpers~")
         shutil.move("./TempBuildFiles/com.unity.xr.management~", "./Packages/com.unity.xr.management~")
-        shutil.move("./TempBuildFiles/com.unity.xr.oculus~", "./Packages/com.unity.xr.oculus~")
         shutil.move("./TempBuildFiles/com.unity.xr.openxr~", "./Packages/com.unity.xr.openxr~")
+        shutil.move("./TempBuildFiles/com.unity.xr.oculus~", "./Packages/com.unity.xr.oculus~")
     except:
         pass
     shutil.move("./TempBuildFiles/XR Interaction Toolkit", "./Assets/Samples")
