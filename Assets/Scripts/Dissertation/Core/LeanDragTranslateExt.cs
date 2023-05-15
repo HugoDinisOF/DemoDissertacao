@@ -223,7 +223,8 @@ namespace Dissertation.Core
 					{
 						Debug.Log("Post grab touch");
 						DebugServerRpc("Post grab touch");
-					SetIsMovingServerRpc(true);
+						SetIsMovingServerRpc(true);
+					}
 				}
 				else if (isMoving.Value)
 				{
@@ -239,8 +240,8 @@ namespace Dissertation.Core
 					DebugServerRpc("Moving");
 					rb.useGravity = fingers.Count == 0;
 				}
-				
-				//RemoveOwnershipServerRpc();
+
+					//RemoveOwnershipServerRpc();
 			}
 			else
 			{
@@ -248,7 +249,7 @@ namespace Dissertation.Core
 				var fingers = Use.UpdateAndGetFingers();
 			}
 
-		}
+			}
 
         [ServerRpc(RequireOwnership = false)]
 		public void SetIsGrabbedServerRpc(bool state)
