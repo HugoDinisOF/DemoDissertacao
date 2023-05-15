@@ -100,7 +100,7 @@ Material:
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scroll_Speed: 0.01
+    - _Scroll_Speed: 0.009
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -109,8 +109,8 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 7.129739, g: 7.129739, b: 7.129739, a: 0}
+    - _FresnelColor: {r: 0, g: 0, b: 0, a: 0}
     - _Hologram_Tiling: {r: 64, g: 64, b: 0, a: 0}
-    - _MainColor: {r: 0, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 0, g: 0, b: 0, a: 1}
     - _normal_color_test: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
