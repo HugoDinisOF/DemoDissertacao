@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Dissertation.BlockLogic;
 using Dissertation.Multiplayer;
+using Unity.Netcode;
 
 namespace Dissertation.Core
 {
     public class CheckBlockInside : AbstractNetworkObject
     {
+        // variable to see if snap is active or not
+        public static bool SNAP = true;
+
         public Block block;
         public float percentOverlapToCount = 50f;
         bool isInside = false;
         BoxCollider collider;
         BoxCollider overlappedCollider = null;
+        LeanDragTranslateExt blockObject = null;
         float volume;
+        float scaleFactor = 0.001f;
 
         override protected void Start()
         {
@@ -23,11 +29,28 @@ namespace Dissertation.Core
             Debug.Log(volume);
         }
 
-        /*
         void FixedUpdate()
         {
-            if (isInside)
+            if (isInside && SNAP && NetworkManager.Singleton.IsServer)
             {
+                Debug.Log("Checking Distance");
+                if (Vector3.Distance(transform.position, blockObject.transform.position) < 0.002f)
+                    return;
+                Debug.Log("Checking isGrabbed & isMoving");
+                if (blockObject.isGrabbed.Value || blockObject.isMoving.Value)
+                    return;
+
+                if (!CheckIfSomethingBelow(blockObject.transform))
+                    return;
+
+                Debug.Log($"Translating {Vector3.Lerp(blockObject.transform.position, transform.position, 0.3f) - blockObject.transform.position}"); 
+
+                blockObject.transform.Translate(Vector3.Lerp(blockObject.transform.position, transform.position, 0.3f) - blockObject.transform.position);
+
+                if (Vector3.Distance(transform.position, blockObject.transform.position) < 0.001f)
+                    blockObject.transform.Translate(transform.position-blockObject.transform.position);
+
+                /*
                 float percentOverlap = CalculateOverlapPercent();
                 Debug.Log(percentOverlap);
                 if (percentOverlap > percentOverlapToCount)
@@ -38,9 +61,30 @@ namespace Dissertation.Core
                 {
                     GameMode.instance.SetBlockState(block.id, false);
                 }
+                */
             }
         }
-        */
+
+        bool CheckIfSomethingBelow(Transform checkObject)
+        {
+            Vector3 centerPos = checkObject.position - new Vector3(0, checkObject.localScale.y / 2 + scaleFactor, 0);
+
+            Collider[] colliders = Physics.OverlapBox(centerPos, new Vector3(scaleFactor/1.5f, scaleFactor, scaleFactor/1.5f));
+
+            Debug.Log("CheckIfSomethingBelow: Start Check");
+            foreach (Collider collider in colliders) 
+            {
+                Debug.Log($"CheckIfSomethingBelow: {collider.gameObject.name}");
+                if (collider.gameObject.name.Contains("Holo") || collider.gameObject.name.Contains("ImageTarget") || collider.gameObject.name == checkObject.gameObject.name)
+                {
+                    continue;
+                }
+                Debug.Log($"CheckIfSomethingBelow: returning true");
+                return true;
+            }
+            Debug.Log($"CheckIfSomethingBelow: returning false");
+            return false;
+        }
 
         float CalculateOverlapPercent()
         {
@@ -59,6 +103,7 @@ namespace Dissertation.Core
                 {
                     // NOTE: Considering all our colliders will be box colliders for now :P
                     overlappedCollider = (BoxCollider)other;
+                    blockObject = other.GetComponent<LeanDragTranslateExt>();
                     isInside = true;
                     GameMode.instance.SetBlockState(block.id, true, ownershipAction.lastOwner);
                 }
@@ -69,10 +114,19 @@ namespace Dissertation.Core
         {
             if (other == overlappedCollider)
             {
-                Debug.Log("LEAVING");
+                Debug.Log($"LEAVING {block.id}");
                 isInside = false;
                 GameMode.instance.SetBlockState(block.id, false, 0);
                 overlappedCollider = null;
+                blockObject = null;
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (blockObject != null) {
+                Vector3 centerPos = blockObject.transform.position - new Vector3(0, blockObject.transform.localScale.y / 2 + scaleFactor, 0);
+                Gizmos.DrawCube(centerPos, (new Vector3(scaleFactor / 1.5f, scaleFactor, scaleFactor / 1.5f)) * 2);
             }
         }
 

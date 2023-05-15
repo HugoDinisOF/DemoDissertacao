@@ -199,8 +199,8 @@ namespace Dissertation.Core
 	{
 
 		Rigidbody rb;
-		public bool isGrabbed = false;
-		public bool isMoving = false;
+		public NetworkVariable<bool> isGrabbed = new NetworkVariable<bool>(false);
+		public NetworkVariable<bool> isMoving = new NetworkVariable<bool>(false);
 
 		override protected void Start()
 		{
@@ -210,7 +210,7 @@ namespace Dissertation.Core
 
 		override protected void Update()
 		{
-			if (OnChangeImageTarget.isImageTargetOn & !isGrabbed)
+			if (OnChangeImageTarget.isImageTargetOn & !isGrabbed.Value)
 			{
 				var fingers = Use.UpdateAndGetFingers();
 				if (fingers.Count >= 1)
@@ -223,17 +223,15 @@ namespace Dissertation.Core
 					{
 						Debug.Log("Post grab touch");
 						DebugServerRpc("Post grab touch");
-					}
-					isMoving = true;
+					SetIsMovingServerRpc(true);
 				}
-				else if (isMoving)
+				else if (isMoving.Value)
 				{
 					//FIXME: BIG PROBLEM HERE SPAMMING CALLS FOR NO REASON
 					DebugServerRpc("pre remove touch");
 					RemoveOwnership();
 					DebugServerRpc("post remove touch");
-					isMoving = false;
-					//rb.useGravity = true;
+					SetIsMovingServerRpc(false);
 				}
 				if (!isRemoving && IsOwner)
 				{
@@ -252,9 +250,16 @@ namespace Dissertation.Core
 
 		}
 
-		public void SetIsGrabbed(bool state)
+        [ServerRpc(RequireOwnership = false)]
+		public void SetIsGrabbedServerRpc(bool state)
 		{
-			isGrabbed = state;
+			isGrabbed.Value = state;
+		}
+
+		[ServerRpc(RequireOwnership = false)]
+		public void SetIsMovingServerRpc(bool state) 
+		{
+			isMoving.Value = state;
 		}
 
 		[ServerRpc(RequireOwnership = false)]
